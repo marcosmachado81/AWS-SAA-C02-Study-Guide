@@ -1463,9 +1463,10 @@ Amazon Kinesis makes it easy to collect, process, and analyze real-time, streami
 - Kinesis is used for processing real-time data streams (data that is generated continuously) from devices constantly sending data into AWS so that said data can be collected and analyzed.
 - It is a fully managed service that automatically scales to match the throughput of your data and requires no ongoing administration. It can also batch, compress, and encrypt the data before loading it, minimizing the amount of storage used at the destination and increasing security.
 - There are three different types of Kinesis:
-  - Kinesis Streams
-  - Kinesis Firehose
-  - Kinesis Analytics
+  - Kinesis Data Streams
+  - Kinesis Data Firehose
+  - Kinesis Data Analytics
+  - Kinesis Video Stream
 - Kinesis Streams works where the data producers stream their data into Kinesis Streams which can retain the data that enters it from one day up until 7 days. Once inside Kinesis Streams, the data is contained within shards. 
 - Kinesis Streams can continuously capture and store terabytes of data per hour from hundreds of thousands of sources such as website clickstreams, financial transactions, social media feeds, IT logs, and location-tracking events. For example: purchase requests from a large online store like Amazon, stock prices, Netflix content, Twitch content, online gaming data, Uber positioning and directions, etc.
 - Amazon Kinesis Firehose is the easiest way to load streaming data into data stores and analytics tools. When data is streamed into Kinesis Firehose, there is no persistent storage there to hold onto it. The data has to be analyzed as it comes in so it's optional to have Lambda functions inside your Kinesis Firehose. Once processed, you send the data elsewhere.
@@ -1476,6 +1477,7 @@ Amazon Kinesis makes it easy to collect, process, and analyze real-time, streami
 - Consumers, or the EC2 instances that read from Kinesis Streams, can go inside the shards to analyze what is in there. Once finished analyzing or parsing the data, the consumers can then pass on the data to a number of places for storage like a DB or S3.
 - The total capacity of a Kinesis stream is the sum of data within its constituent shards.
 - You can always increase the write capacity assigned to your shard table.
+- There are 2 performance improving feature for Kinesis Data Stream: enhanced fan-out and HTTP/2 data retrival API.
 
 ## Lambda
 
