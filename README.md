@@ -5,7 +5,7 @@ This study guide will help you pass the newer AWS Certified Solutions Architect 
   2. The FAQs for the most critical services, included in the recommended reading list below
   3. Tutorials Dojo's <a href="https://www.udemy.com/course/aws-certified-solutions-architect-associate-amazon-practice-exams-saa-c02/">AWS Certified Solutions Architect Associate Practice Exams </a>
   4. Andrew Brown's <a href="https://www.youtube.com/watch?v=Ia-UEYYR44s">AWS Certified Solutions Architect - Associate 2020 (PASS THE EXAM!) | Ad-Free Course
-</a> 
+</a>
 
 Go through the course you purchased as part of Step 1. twice. The first time should be a runthrough to introduce yourself to new AWS concepts and exam details. Jot down the services that confuse you and start with their FAQs as part of Step 2. You should then go through Step 1. once more, but this time as a deep dive. Be sure to pause frequently so that you research concepts that aren't perfectly clear, take notes, and experiment on the AWS console. Once you've completed Step 1. and Step 2., begin testing yourself with the Tutorial Dojo exams. Take the time to read the explanations for the questions that you get wrong. During the days leading up to your exam, go through Andrew Brown's YouTube video as the final step just as a refresher. If at any point you find yourself feeling uncertain of your progress and in need of more time, you can postpone your AWS exam date. This can be done twice. Finally, be sure to keep up on the ongoing discussions in <a href="https://old.reddit.com/r/AWSCertifications/">r/AWSCertifications</a>. There you will find more general information regarding exam tips, study material, and advice from other exam takers.
 
@@ -16,10 +16,11 @@ Go through the course you purchased as part of Step 1. twice. The first time sho
 
 
 ## Table of Contents
-1. <a href="https://github.com/keenanromain/AWS-SAA-C02-Study-Guide#introduction">Introduction</a>
+1. <a href="#introduction">Introduction</a>
 
 2. <a href="https://github.com/keenanromain/AWS-SAA-C02-Study-Guide#identity-access-management-iam">Identity Access Management (IAM)</a>
 
+## Storage Solutions
 3. <a href="https://github.com/keenanromain/AWS-SAA-C02-Study-Guide#simple-storage-service-s3">Simple Storage Service (S3)</a>
 
 4. <a href="https://github.com/keenanromain/AWS-SAA-C02-Study-Guide#cloudfront">CloudFront</a>
@@ -84,9 +85,13 @@ Go through the course you purchased as part of Step 1. twice. The first time sho
 
 34. <a href="https://github.com/keenanromain/AWS-SAA-C02-Study-Guide#aws-organizations">AWS Organizations</a>
 
-35. <a href="https://github.com/keenanromain/AWS-SAA-C02-Study-Guide#miscellaneous">Miscellaneous</a>
+35. <a href="#aws-step-functions">AWS Step Functions</a>
 
+36. <a href="#aws-batch">AWS Batch</a>
 
+37. <a href="#amazon-swf">Amazon Simple Workflow Service</a>
+
+38. <a href="#miscellaneous">Miscellaneous</a>
 
 ## Introduction
 
@@ -154,8 +159,8 @@ You can cover a lot of ground by skimming over what you already know or what you
 
   7. <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-eni.html"> Elastic network interfaces</a>
 
-  8. <a href="https://aws.amazon.com/s3/faqs/">Amazon S3 FAQs</a> 
-  
+  8. <a href="https://aws.amazon.com/s3/faqs/">Amazon S3 FAQs</a>
+
   9. <a href="https://aws.amazon.com/elasticloadbalancing/faqs/"> Elastic Load Balancing FAQs</a>
 
   10. <a href="https://aws.amazon.com/route53/faqs/"> Amazon Route 53 FAQs</a>
@@ -167,7 +172,7 @@ You can cover a lot of ground by skimming over what you already know or what you
   13. <a href="https://aws.amazon.com/fsx/windows/faqs/">Amazon FSx for Windows File Server FAQs</a>
 
   14. <a href="https://aws.amazon.com/fsx/lustre/faqs/">Amazon FSx for Lustre FAQs</a>
-  
+
   15. <a href="https://aws.amazon.com/organizations/faqs/">AWS Organizations FAQs</a>
 
 ## Identity Access Management (IAM)
@@ -225,7 +230,7 @@ S3 provides developers and IT teams with secure, durable, and highly-scalable ob
 
   2.) an expandable amount of metadata
 
-  3.) a unique identifier so that the data can be retrieved 
+  3.) a unique identifier so that the data can be retrieved
 
 This makes it a perfect candidate to host files or directories and a poor candidate to host databases or operating systems. The following table highlights key differences between object and block storage:
 
@@ -238,7 +243,7 @@ Data uploaded into S3 is spread across multiple files and facilities. The files 
 - Objects (regular files or directories) are stored in S3 with a key, value, version ID, and metadata. They can also contain torrents and subresources for access control lists which are basically permissions for the object itself.
 - The data consistency model for S3 ensures immediate read access for new objects after the initial PUT requests. These new objects are introduced into AWS for the first time and thus do not need to be updated anywhere so they are available immediately.
 - The data consistency model for S3 ensures eventual read consistency for PUTS and DELETES of already existing objects. This is because the change takes a little time to propagate across the entire Amazon network.
-- Because of the eventual consistency model when updating existing objects in S3, those updates might not be immediately reflected. As object updates are made to the same key, an older version of the object might be provided back to the user when the next read request is made. 
+- Because of the eventual consistency model when updating existing objects in S3, those updates might not be immediately reflected. As object updates are made to the same key, an older version of the object might be provided back to the user when the next read request is made.
 - Amazon guarantees 99.999999999% (or 11 9s) durability for all S3 storage classes except its Reduced Redundancy Storage class.
 - S3 comes with the following main features:
 
@@ -280,7 +285,7 @@ Data uploaded into S3 is spread across multiple files and facilities. The files 
   3.) For access via the console & the terminal, use cross-account IAM roles
 
 - S3 is a great candidate for static website hosting. When you enable static website hosting for S3 you need both an index.html file and an error.html file. Static website hosting creates a website endpoint that can be accessed via the internet.
-- When you upload new files and have versioning enabled, they will not inherit the properties of the previous version. 
+- When you upload new files and have versioning enabled, they will not inherit the properties of the previous version.
 
 ### S3 Storage Classes:
 **S3 Standard** - 99.99% availability and 11 9s durability. Data in this class is stored redundantly across multiple devices in multiple facilities and is designed to withstand the failure of 2 concurrent data centers.
@@ -352,13 +357,13 @@ The Amazon S3 notification feature enables you to receive and send notifications
 - You can integrate your ElasticSearch domain with S3 and Lambda. In this setup, any new logs received by S3 will trigger an event notification to Lambda, which in turn will then run your application code on the new log data. After your code finishes processing, the data will be streamed into your ElasticSearch domain and be available for observation.
 
 ### Maximizing S3 Read/Write Performance:
-- If the request rate for reading and writing objects to S3 is extremely high, then you can use hash keys or random strings to prefix the object's name. In such cases, the partitions used to store the objects will be better distributed and therefore will allow better read/write performance on your objects. 
+- If the request rate for reading and writing objects to S3 is extremely high, then you can use hash keys or random strings to prefix the object's name. In such cases, the partitions used to store the objects will be better distributed and therefore will allow better read/write performance on your objects.
 - If your S3 data is receiving a high number of GET requests from users, you should consider using Amazon CloudFront for performance optimization. By integrating CloudFront with S3, you can distribute content via CloudFront's cache to your users for lower latency and a higher data transfer rate. This also has the added bonus of sending fewer direct requests to S3 which will reduce costs. For example, suppose that you have a few objects that are very popular. CloudFront fetches those objects from S3 and caches them. CloudFront can then serve future requests for the objects from its cache, reducing the total number of GET requests it sends to Amazon S3.
 - <a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/request-rate-perf-considerations.html "> More information on how to ensure high performance in S3</a>
 
 ### S3 Server Access Logging:
-- Server access logging provides detailed records for the requests that are made to a bucket. Server access logs are useful for many applications. For example, access log information can be useful in security and access audits. It can also help you learn about your customer base and better understand your Amazon S3 bill. 
-- By default, logging is disabled. When logging is enabled, logs are saved to a bucket in the same AWS Region as the source bucket. 
+- Server access logging provides detailed records for the requests that are made to a bucket. Server access logs are useful for many applications. For example, access log information can be useful in security and access audits. It can also help you learn about your customer base and better understand your Amazon S3 bill.
+- By default, logging is disabled. When logging is enabled, logs are saved to a bucket in the same AWS Region as the source bucket.
 - Each access log record provides details about a single access request, such as the requester, bucket name, request time, request action, response status, and an error code, if relevant.
 - It works in the following way:
    - S3 periodically collecting access log records of the bucket you want to monitor
@@ -366,7 +371,7 @@ The Amazon S3 notification feature enables you to receive and send notifications
    - S3 finally uploads the log files to your secondary monitoring bucket as log objects
 
 ### S3 Multipart Upload:
-- Multipart upload allows you to upload a single object as a set of parts. Each part is a contiguous portion of the object's data. You can upload these object parts independently and in any order. 
+- Multipart upload allows you to upload a single object as a set of parts. Each part is a contiguous portion of the object's data. You can upload these object parts independently and in any order.
 - Multipart uploads are recommended for files over 100 MB and is *the only way* to upload files over 5 GB. It achieves functionality by uploading your data in parallel to boost efficiency.
 - If transmission of any part fails, you can retransmit that part without affecting other parts. After all parts of your object are uploaded, Amazon S3 assembles these parts and creates the object.
 - Possible reasons for why you would want to use Multipart upload:
@@ -386,18 +391,18 @@ The Amazon S3 notification feature enables you to receive and send notifications
   - specify an object key
   - specify the HTTP method (GET to download the object)
   - specift the expiration date and time.
-  
+
 - The pre-signed URLs are valid only for the specified duration and anyone who receives the pre-signed URL within that duration can then access the object.
 - The following diagram highlights how Pre-signed URLs work:
 
 ![Screen Shot 2020-06-09 at 8 20 53 PM](https://user-images.githubusercontent.com/13093517/84213482-c6773300-aa8e-11ea-84a1-3c17e14197bc.png)
 
 ### S3 Select:
-- S3 Select is an Amazon S3 feature that is designed to pull out only the data you need from an object, which can dramatically improve the performance and reduce the cost of applications that need to access data in S3. 
-- Most applications have to retrieve the entire object and then filter out only the required data for further analysis. S3 Select enables applications to offload the heavy lifting of filtering and accessing data inside objects to the Amazon S3 service. 
-- As an example, let’s imagine you’re a developer at a large retailer and you need to analyze the weekly sales data from a single store, but the data for all 200 stores is saved in a new GZIP-ed CSV every day. 
-  - Without S3 Select, you would need to download, decompress and process the entire CSV to get the data you needed. 
-  - With S3 Select, you can use a simple SQL expression to return only the data from the store you’re interested in, instead of retrieving the entire object. 
+- S3 Select is an Amazon S3 feature that is designed to pull out only the data you need from an object, which can dramatically improve the performance and reduce the cost of applications that need to access data in S3.
+- Most applications have to retrieve the entire object and then filter out only the required data for further analysis. S3 Select enables applications to offload the heavy lifting of filtering and accessing data inside objects to the Amazon S3 service.
+- As an example, let’s imagine you’re a developer at a large retailer and you need to analyze the weekly sales data from a single store, but the data for all 200 stores is saved in a new GZIP-ed CSV every day.
+  - Without S3 Select, you would need to download, decompress and process the entire CSV to get the data you needed.
+  - With S3 Select, you can use a simple SQL expression to return only the data from the store you’re interested in, instead of retrieving the entire object.
 - By reducing the volume of data that has to be loaded and processed by your applications, S3 Select can improve the performance of most applications that frequently access data from S3 by up to 400% because you’re dealing with significantly less data.
 - You can also use S3 Select for Glacier.
 
@@ -409,9 +414,9 @@ The AWS CDN service is called CloudFront. It serves up cached content and assets
 
 ### CloudFront Key Details:
 - When content is cached, it is done for a certain time limit called the Time To Live, or TTL, which is always in seconds
-- If needed, CloudFront can serve up entire websites including dynamic, static, streaming and interactive content. 
+- If needed, CloudFront can serve up entire websites including dynamic, static, streaming and interactive content.
 - Requests are always routed and cached in the nearest edge location for the user, thus propagating the CDN nodes and guaranteeing best performance for future requests.
-- There are two different types of distributions: 
+- There are two different types of distributions:
   - **Web Distribution**: web sites, normal cached items, etc
   - **RTMP**: streaming content, adobe, etc
 - Edge locations are not just read only. They can be written to which will then return the write value back to the origin.
@@ -420,12 +425,12 @@ The AWS CDN service is called CloudFront. It serves up cached content and assets
 - You can set up a failover for the origin by creating an origin group with two origins inside. One origin will act as the primary and the other as the secondary. CloudFront will automatically switch between the two when the primary origin fails.
 - Amazon CloudFront delivers your content from each edge location and offers a Dedicated IP Custom SSL feature. SNI Custom SSL works with most modern browsers.
 - If you run PCI or HIPAA-compliant workloads and need to log usage data, you can do the following:
-    - Enable CloudFront access logs. 
+    - Enable CloudFront access logs.
     - Capture requests that are sent to the CloudFront API.
 - An Origin Access Identity (OAI) is used for sharing private content via CloudFront. The OAI is a virtual user that will be used to give your CloudFront distribution permission to fetch a private object from your origin (e.g. S3 bucket).
 
 ### CloudFront Signed URLs and Signed Cookies:
-- CloudFront signed URLs and signed cookies provide the same basic functionality: they allow you to control who can access your content. These features exist because many companies that distribute content via the internet want to restrict access to documents, business data, media streams, or content that is intended for selected users. As an example, users who have paid a fee should be able to access private content that users on the free tier shouldn't. 
+- CloudFront signed URLs and signed cookies provide the same basic functionality: they allow you to control who can access your content. These features exist because many companies that distribute content via the internet want to restrict access to documents, business data, media streams, or content that is intended for selected users. As an example, users who have paid a fee should be able to access private content that users on the free tier shouldn't.
 - If you want to serve private content through CloudFront and you're trying to decide whether to use signed URLs or signed cookies, consider the following:
   - Use signed URLs for the following cases:
     - You want to use an RTMP distribution. Signed cookies aren't supported for RTMP distributions.
@@ -441,9 +446,9 @@ The AWS CDN service is called CloudFront. It serves up cached content and assets
 Snowball is a giant physical disk that is used for migrating high quantities of data into AWS. It is a peta-byte scale data transport solution. Using a large disk like Snowball helps to circumvent common large scale data transfer problems such as high network costs, long transfer times, and security concerns. Snowballs are extremely secure by design and once the data transfer is complete, the snowballs are wiped clean of your data.
 
 ### Snowball Key Details:
-- Snowball is a strong choice for a data transfer job if you need a secure and quick data transfer ranging in the terabytes to many petabytes into AWS. 
+- Snowball is a strong choice for a data transfer job if you need a secure and quick data transfer ranging in the terabytes to many petabytes into AWS.
 - Snowball can also be the right choice if you don’t want to make expensive upgrades to your existing network infrastructure, if you frequently experience large backlogs of data, if you're located in a physically isolated environment, or if you're in an area where high-speed internet connections are not available or cost-prohibitive.
-- As a rule of thumb, if it takes more than one week to upload your data to AWS using the spare capacity of your existing internet connection, then you should consider using Snowball. 
+- As a rule of thumb, if it takes more than one week to upload your data to AWS using the spare capacity of your existing internet connection, then you should consider using Snowball.
 - For example, if you have a 100 Mb connection that you can solely dedicate to transferring your data and you need to transfer 100 TB of data in total, it will take more than 100 days for the transfer to complete over that connection. You can make the same transfer in about a week by using multiple Snowballs.
 - Here is a reference for when Snowball should be considered based on the number of days it would take to make the same transfer over an internet connection:
 
@@ -456,7 +461,7 @@ Snowball is a giant physical disk that is used for migrating high quantities of 
 ## Storage Gateway
 
 ### Storage Gateway Simplified:
-Storage Gateway is a service that connects on-premise environments with cloud-based storage in order to seamlessly and securely integrate an on-prem application with a cloud storage backend. and Volume Gateway as a way of storing virtual hard disk drives in the cloud. 
+Storage Gateway is a service that connects on-premise environments with cloud-based storage in order to seamlessly and securely integrate an on-prem application with a cloud storage backend. and Volume Gateway as a way of storing virtual hard disk drives in the cloud.
 
 
 ### Storage Gateway Key Details:
@@ -464,7 +469,7 @@ Storage Gateway is a service that connects on-premise environments with cloud-ba
 - Storage Gateway can sit on top of VMWare's ESXi hypervisor for Linux machines and Microsoft’s Hyper-V hypervisor for Windows machines.
 - The three types of Storage Gateways are below:
   - **File Gateway** - Operates via NFS or SMB and is used to store files in S3 over a network filesystem mount point in the supplied virtual machine. Simply put, you can think of a File Gateway as a file system mount on S3.
-  - **Volume Gateway** - Operates via iSCSI and is used to store copies of hard disk drives or virtual hard disk drives in S3. These can be achieved via *Stored Volumes* or *Cached Volumes*. Simply put, you can think of Volume Gateway as a way of storing virtual hard disk drives in the cloud. 
+  - **Volume Gateway** - Operates via iSCSI and is used to store copies of hard disk drives or virtual hard disk drives in S3. These can be achieved via *Stored Volumes* or *Cached Volumes*. Simply put, you can think of Volume Gateway as a way of storing virtual hard disk drives in the cloud.
   - **Tape Gateway** - Operates as a Virtual Tape Library
 - Relevant file information passing through Storage Gateway like file ownership, permissions, timestamps, etc. are stored as metadata for the objects that they belong to. Once these file details are stored in S3, they can be managed natively. This mean all S3 features like versioning, lifecycle management, bucket policies, cross region replication, etc. can be applied as a part of Storage Gateway.
 - Applications interfacing with AWS over the Volume Gateway is done over the iSCSI block protocol. Data written to these volumes can be asynchronously backed up into AWS Elastic Block Store (EBS) as point-in-time snapshots of the volumes’ content. These kind of snapshots act as incremental backups that capture only changed state similar to a pull request in Git. Further, all snapshots are compressed to reduce storage costs.
@@ -479,6 +484,11 @@ Storage Gateway is a service that connects on-premise environments with cloud-ba
   - In the following diagram of a Cached Volume architecture, the most frequently accessed data is served to the user from the Storage Area Network, Network Attached, or Direct Attached Storage within your data center. S3 serves the rest of the data from AWS.
   - ![Screen Shot 2020-06-08 at 5 17 02 PM](https://user-images.githubusercontent.com/13093517/84081406-e5e95f80-a9ab-11ea-82d2-8bd1a53876ba.png)
 
+## AWS DataSync
+- Simple and fast way to move large amounts of data online between on-premises storage and Amazon S3, EFS, or FSx for Windows File Server.
+- Automatically handles jobs
+- You don't need modify your applications
+- Reduce operational costs
 
 ## Elastic Compute Cloud (EC2)
 
@@ -491,19 +501,21 @@ EC2 spins up resizeable server instances that can scale up and down quickly. An 
 
 ![architecture_ami_instance](https://user-images.githubusercontent.com/13093517/84097031-64a4c380-a9d1-11ea-8358-1c3eec1c4471.png)
 
-- You have the option of using dedicated tenancy with your instance. This means that within an AWS datacenter, you have exclusive access to physical hardware. Naturally, this option incurs a high cost, but it makes sense if you work with technology that has a strict licensing policy. 
+- You have the option of using dedicated tenancy with your instance. This means that within an AWS datacenter, you have exclusive access to physical hardware. Naturally, this option incurs a high cost, but it makes sense if you work with technology that has a strict licensing policy.
+- tenancy values: default(shared hardware), dedicated(single-tenant hardware), host(dedicated host, isolated server with configurations that you can control)
+- After you launch an instance, there are some limitations to changing its tenancy: You can change tenancy of an instance form dedicated to host, or from host to dedicated to host after you've launched it.
 - With EC2 VM Import, you can import existing VMs into AWS as long as those hosts use VMware ESX, VMware Workstation, Microsoft Hyper-V, or Citrix Xen virtualization formats.
 - When you launch a new EC2 instance, EC2 attempts to place the instance in such a way that all of your VMs are spread out across different hardware to limit failure to a single location. You can use placement groups to influence the placement of a group of interdependent instances that meet the needs of your workload. There is an explanation about placement groups in a section below.
 - When you launch an instance in Amazon EC2, you have the option of passing user data to the instance when the instance starts. This user data can be used to run common automated configuration tasks or scripts. For example, you can pass a bash script that ensures htop is installed on the new EC2 host and is always active.
-- By default, the public IP address of an EC2 Instance is released when the instance is stopped even if its stopped temporarily. Therefore, it is best to refer to an instance by its external DNS hostname. If you require a persistent public IP address that can be associated to the same instance, use an Elastic IP address which is basically a static IP address instead. 
+- By default, the public IP address of an EC2 Instance is released when the instance is stopped even if its stopped temporarily. Therefore, it is best to refer to an instance by its external DNS hostname. If you require a persistent public IP address that can be associated to the same instance, use an Elastic IP address which is basically a static IP address instead.
 - If you have requirements to self-manage a SQL database, EC2 can be a solid alternative to RDS. To ensure high availability, remember to have at least one other EC2 Instance in a separate Availability zone so even if a DB instance goes down, the other(s) will still be available.
 - A golden image is simply an AMI that you have fully customized to your liking with all necessary software/data/configuration details set and ready to go once. This personal AMI can then be the source from which you launch new instances.
 - Instance status checks check the health of the running EC2 server, systems status check monitor the health of the underlying hypervisor. If you ever notice a systems status issue, just stop the instance and start it again (no need to reboot) as the VM will start up again on a new hypervisor.
 
 ### EC2 Instance Pricing:
 - **On-Demand instances** are based on a fixed rate by the hour or second. As the name implies, you can start an On-Demand instance whenever you need one and can stop it when you no longer need it. There is no requirement for a long-term commitment.
-- **Reserved instances** ensure that you keep exclusive use of an instance on 1 or 3 year contract terms. The long-term commitment provides significantly reduced discounts at the hourly rate. 
-- **Spot instances** take advantage of Amazon’s excess capacity and work in an interesting manner. In order to use them, you must financially bid for access. Because Spot instances are only available when Amazon has excess capacity, this option makes sense only if your app has flexible start and end times. You won’t be charged if your instance stops due to a price change (e.g., someone else just bid a higher price for the access) and so consequently your workload doesn’t complete. However, if you terminate the instance yourself you will be charged for any hour the instance ran. Spot instances are normally used in batch processing jobs. 
+- **Reserved instances** ensure that you keep exclusive use of an instance on 1 or 3 year contract terms. The long-term commitment provides significantly reduced discounts at the hourly rate.
+- **Spot instances** take advantage of Amazon’s excess capacity and work in an interesting manner. In order to use them, you must financially bid for access. Because Spot instances are only available when Amazon has excess capacity, this option makes sense only if your app has flexible start and end times. You won’t be charged if your instance stops due to a price change (e.g., someone else just bid a higher price for the access) and so consequently your workload doesn’t complete. However, if you terminate the instance yourself you will be charged for any hour the instance ran. Spot instances are normally used in batch processing jobs.
 
 ### Standard Reserved vs. Convertible Reserved vs. Scheduled Reserved:
 - **Standard Reserved Instances** have inflexible reservations that are discounted at 75% off of On-Demand instances. Standard Reserved Instances cannot be moved between regions. You can choose if a Reserved Instance applies to either a specific Availability Zone, or an Entire Region, but you cannot change the region.
@@ -512,7 +524,7 @@ EC2 spins up resizeable server instances that can scale up and down quickly. An 
 
 
 ### EC2 Instance Lifecycle:
-The following table highlights the many instance states that a VM can be in at a given time. 
+The following table highlights the many instance states that a VM can be in at a given time.
 
 | Instance state | Description | Billing |
 | ------------- | ------------- |--------------|
@@ -524,34 +536,52 @@ The following table highlights the many instance states that a VM can be in at a
 | `terminated`  | The instance has been permanently deleted and cannot be started.  | Not billed |
 
 **Note**: Reserved Instances that are terminated are billed until the end of their term.  
- 
+
 ### EC2 Security:
-- When you deploy an Amazon EC2 instance, you are responsible for management of the guest operating system (including updates and security patches), any application software or utilities installed on the instances, and the configuration of the AWS-provided firewall (called a security group) on each instance. 
+- When you deploy an Amazon EC2 instance, you are responsible for management of the guest operating system (including updates and security patches), any application software or utilities installed on the instances, and the configuration of the AWS-provided firewall (called a security group) on each instance.
 - With EC2, termination protection of the instance is disabled by default. This means that you do not have a safe-guard in place from accidentally terminating your instance. You must turn this feature on if you want that extra bit of protection.
 - Amazon EC2 uses public–key cryptography to encrypt and decrypt login information. Public–key cryptography uses a public key to encrypt a piece of data, such as a password, and the recipient uses their private key to decrypt the data. The public and private keys are known as a key pair.
 - You can encrypt your root device volume which is where you install the underlying OS. You can do this during creation time of the instance or with third-party tools like bit locker. Of course, additional or secondary EBS volumes are also encryptable as well.
 - By default, an EC2 instance with an attached AWS Elastic Block Store (EBS) root volume will be deleted together when the instance is terminated. However, any additional or secondary EBS volume that is also attached to the same instance will be preserved. This is because the root EBS volume is for OS installations and other low-level settings. This rule can be modified, but it is usually easier to boot a new instance with a fresh root device volume than make use of an old one.
 
+### EC2 Scales
+- Scale-up: When you change the instance type to a big one (vertical scale). From m4.large to a m4.xlarge is an example of scale-up.
+- Scale-out: When you increase the number of instances (horizontal scale).
+
 
 ### EC2 Placement Groups:
--  Placement groups balance the tradeoff between risk tolerance and network performance when it comes to your fleet of EC2 instances. The more you care about risk, the more isolated you want your instances to be from each other. The more you care about performance, the more conjoined you want your instances to be with each other. 
+-  Placement groups balance the tradeoff between risk tolerance and network performance when it comes to your fleet of EC2 instances. The more you care about risk, the more isolated you want your instances to be from each other. The more you care about performance, the more conjoined you want your instances to be with each other.
 - There are three different types of EC2 placement groups:
 
   1.) Clustered Placement Groups
     - Clustered Placement Grouping is when you put all of your EC2 instances in a single availability zone. This is recommended for applications that need the lowest latency possible and require the highest network throughput.
     - Only certain instances can be launched into this group (compute optimized, GPU optimized, storage optimized, and memory optimized).
-  
+
   2.) Spread Placement Groups
-    - Spread Placement Grouping is when you put each individual EC2 instance on top of its own distinct hardware so that failure is isolated. 
-    - Your VMs live on separate racks, with separate network inputs and separate power requirements. Spread placement groups are recommended for applications that have a small number of critical instances that should be kept separate from each other. 
-  
+    - Spread Placement Grouping is when you put each individual EC2 instance on top of its own distinct hardware so that failure is isolated.
+    - Your VMs live on separate racks, with separate network inputs and separate power requirements. Spread placement groups are recommended for applications that have a small number of critical instances that should be kept separate from each other.
+
   3.) Partitioned Placement Groups
     - Partitioned Placement Grouping is similar to Spread placement grouping, but differs because you can have multiple EC2 instances within a single partition. Failure instead is isolated to a partition (say 3 or 4 instances instead of 1), yet you enjoy the benefits of close proximity for improved network performance.
     - With this placement group, you have multiple instances living together on the same hardware inside of different availability zones across one or more regions.
     - If you would like a balance of risk tolerance and network performance, use Partitioned Placement Groups.
-  
+
 - Each placement group name within your AWS must be unique
 - You can move an existing instance into a placement group guaranteed that it is in a stopped state. You can move the instance via the CLI or an AWS SDK, but not the console. You can also take a snapshot of the existing instance, convert it into an AMI, and launch it into the placement group where you desire it to be.
+
+### Recover instance
+- Recover action is supported only on few instances and only with EBS volumes
+- Terminated instances cannot be recovered
+- Recovered instance is identical to the original including the instance ID, private IP address, Elastic IP address, public IPv4 address, and all instance metadata.
+- If the impaired instance is in a placement group, the recovered instance runs in the placement group.
+
+### Spot Instance
+- To use spot instances, you create a spot instance request that includes the desired number of instances, the instance type, the AZ, and the maximum price.
+- requests can be open (waiting to be fulfilled), active (has an associated spot instance), failed (request has one or more bad parameters), closed (was interrupted or terminated), disabled (you stopped the spot instance), and cancelled (you cancelled or expired request)
+- Spot blocks: spot instances with a defined duration designed not to be interrupted and will run continuously for the duration you select
+- If your Spot Instance request is active and has an associated running Spot Instance, canceling the request does not terminate the instance.
+
+<img src="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/images/spot_lifecycle.png" style="width: 70%" />
 
 ## Elastic Block Store (EBS)
 
@@ -573,8 +603,8 @@ An Amazon EBS volume is a durable, block-level storage device that you can attac
 - After you create a volume, you can attach it to any EC2 instance in the same availability zone.
 - Amazon EBS provides the ability to create snapshots (backups) of any EBS volume and write a copy of the data in the volume to S3, where it is stored redundantly in multiple Availability Zones
 - An EBS snapshot reflects the contents of the volume during a concrete instant in time.
-- An image (AMI) is the same thing, but includes an operating system and a boot loader so it can be used to boot an instance. 
-- AMIs can also be thought of as prebaked, launchable servers. AMIs are always used when launching an instance. 
+- An image (AMI) is the same thing, but includes an operating system and a boot loader so it can be used to boot an instance.
+- AMIs can also be thought of as prebaked, launchable servers. AMIs are always used when launching an instance.
 - When you provision an EC2 instance, an AMI is actually the first thing you are asked to specify. You can choose a pre-made AMI or choose your own made from an EBS snapshot.
 - You can also use the following criteria to help pick your AMI:
   - Operating System
@@ -597,7 +627,7 @@ An Amazon EBS volume is a durable, block-level storage device that you can attac
 - EBS Snapshots are point in time copies of volumes. You can think of Snapshots as photographs of the disk’s current state and the state of everything within it.
 - A snapshot is constrained to the region where it was created.
 - Snapshots only capture the state of change from when the last snapshot was taken. This is what is recorded in each new snapshot, not the entire state of the server.
-- Because of this, it may take some time for your first snapshot to be created. This is because the very first snapshot's change of state is the entire new volume. Only afterwards will the delta be captured because there will then be something previous to compare against. 
+- Because of this, it may take some time for your first snapshot to be created. This is because the very first snapshot's change of state is the entire new volume. Only afterwards will the delta be captured because there will then be something previous to compare against.
 - EBS snapshots occur asynchronously which means that a volume can be used as normal while a snapshot is taking place.
 - When creating a snapshot for a future root device, tt is considered best practices to stop the running instance where the original device is before taking the snapshot.
 - The easiest way to move an EC2 instance and a volume to another availability zone is to take a snapshot.
@@ -614,7 +644,7 @@ An Amazon EBS volume is a durable, block-level storage device that you can attac
 - EBS-backed Volumes are launched from an AWS EBS snapshot, as the name implies
 - Instance Store-backed Volumes are launched from an AWS S3 stored template. They are ephemeral, so be careful when shutting down an instance!
 - Secondary instance stores for an instance-store backed root device must be installed during the original provisioning of the server. You cannot add more after the fact. However, you can add EBS volumes to the same instance after the server's creation.
-- With these drawbacks of Instance Store volumes, why pick one? Because they have a very high IOPS rate. So while an Instance Store can't provide data persistence, it can provide much higher IOPS compared to network attached storage like EBS. 
+- With these drawbacks of Instance Store volumes, why pick one? Because they have a very high IOPS rate. So while an Instance Store can't provide data persistence, it can provide much higher IOPS compared to network attached storage like EBS.
 - Further, Instance stores are ideal for temporary storage of information that changes frequently such as buffers, caches, scratch data, and other temporary content, or for data that is replicated across a fleet of instances, such as a load-balanced pool of web servers.
 - When to use one over the other?
   - Use EBS for DB data, critical logs, and application configs.
@@ -623,20 +653,20 @@ An Amazon EBS volume is a durable, block-level storage device that you can attac
 
 ### EBS Encryption:
 - EBS encryption offers a straight-forward encryption solution for EBS resources that doesn't require you to build, maintain, and secure your own key management infrastructure.
-- It uses AWS Key Management Service (AWS KMS) customer master keys (CMK) when creating encrypted volumes and snapshots. 
+- It uses AWS Key Management Service (AWS KMS) customer master keys (CMK) when creating encrypted volumes and snapshots.
 - You can encrypt both the root device and seconary volumes of an EC2 instance. When you create an encrypted EBS volume and attach it to a supported instance type, the following types of data are encrypted:
   - Data at rest inside the volume
   - All data moving between the volume and the instance
   - All snapshots created from the volume
   - All volumes created from those snapshots
-- EBS encrypts your volume with a data key using the AES-256 algorithm. 
+- EBS encrypts your volume with a data key using the AES-256 algorithm.
 - Snapshots of encrypted volumes are naturally encrypted as well. Volumes restored from encrypted snapshots are also encrypted too. You can only share unencrypted snapshots.
 - The old way of encrypting a root device was to create a snapshot of a provisioned EC2 instance. While making a copy of that snapshot, you then enabled encryption during the copy's creation. Finally, once the copy was encrypted, you then created an AMI from the encrypted copy and used to have an EC2 instance with encryption on the root device. Because of how complex this is, you can now simply encrypt root devices as part of the EC2 provisioning options.
 
 ## Elastic Network Interfaces (ENI)
 
 ### ENI Simplified:
-An elastic network interface is a networking component that represents a virtual network card. When you provision a new instance, there will be an ENI attached automatically and you can create and configure additional network interfaces if desired. When you move a network interface from one instance to another, network traffic is redirected to the new instance. 
+An elastic network interface is a networking component that represents a virtual network card. When you provision a new instance, there will be an ENI attached automatically and you can create and configure additional network interfaces if desired. When you move a network interface from one instance to another, network traffic is redirected to the new instance.
 
 ### ENI Key Details:
 - ENI is used mainly for low-budget, high-availability network solutions
@@ -649,21 +679,21 @@ An elastic network interface is a networking component that represents a virtual
   - When it's stopped (warm attach)
   - When the instance is being launched (cold attach).
 - If an EC2 instance fails with ENI properly configured, you (or more likely,the code running on your behalf) can attach the network interface to a hot standby instance. Because ENI interfaces maintain their own private IP addresses, Elastic IP addresses, and MAC address, network traffic will begin to flow to the standby instance as soon as you attach the network interface on the replacement instance. Users will experience a brief loss of connectivity between the time the instance fails and the time that the network interface is attached to the standby instance, but no changes to the VPC route table or your DNS server are required.
-- For instances that work with Machine Learning and High Performance Computing, use EFA (Elastic Fabric Adaptor). EFAs accelerate the work required from the above use cases. EFA provides lower and more consistent latency and higher throughput than the TCP transport traditionally used in cloud-based High Performance Computing systems. 
+- For instances that work with Machine Learning and High Performance Computing, use EFA (Elastic Fabric Adaptor). EFAs accelerate the work required from the above use cases. EFA provides lower and more consistent latency and higher throughput than the TCP transport traditionally used in cloud-based High Performance Computing systems.
 - EFA can also use OS-bypass (on linux only) that will enable ML and HPC applications to interface with the Elastic Fabric Adaptor directly, rather than be normally routed to it through the OS. This gives it a huge performance increase.
-- You can enable a VPC flow log on your network interface to capture information about the IP traffic going to and from a network interface. 
+- You can enable a VPC flow log on your network interface to capture information about the IP traffic going to and from a network interface.
 
 ## Security Groups
 
 ### Security Groups Simplified:
-Security Groups are used to control access (SSH, HTTP, RDP, etc.) with EC2. They act as a virtual firewall for your instances to control inbound and outbound traffic. When you launch an instance in a VPC, you can assign up to five security groups to the instance and security groups act at the instance level, not the subnet level. 
+Security Groups are used to control access (SSH, HTTP, RDP, etc.) with EC2. They act as a virtual firewall for your instances to control inbound and outbound traffic. When you launch an instance in a VPC, you can assign up to five security groups to the instance and security groups act at the instance level, not the subnet level.
 
 ### Security Groups Key Details:
 - Security groups control inbound and outbound traffic for your instances (they act as a Firewall for EC2 Instances) while NACLs control inbound and outbound traffic for your subnets (they act as a Firewall for Subnets). Security Groups usually control the list of ports that are allowed to be used by your EC2 instances and the NACLs control which network or list of IP addresses can connect to your whole VPC.
 - Everytime you make a change to a security group, that change occurs immediately
 - Whenever you create an inbound rule, an outbound rule is created immediately. This is because Security Groups are *stateful*. This means that when you create an ingress rule for a security group, a corresponding egress rule is created to match it. This is in contrast with NACLs which are *stateless* and require manual intervention for creating both inbound and outbound rules.
 - Security Group rules are based on ALLOWs and there is no concept of DENY when in comes to Security Groups. This means you cannot explicitly deny or blacklist specific ports via Security Groups, you can only implicitly deny them by excluding them in your ALLOWs list
-- Because of the above detail, everything is blocked by default. You must go in and intentionally allow access for certain ports. 
+- Because of the above detail, everything is blocked by default. You must go in and intentionally allow access for certain ports.
 - Security groups are specific to a single VPC, so you can't share a Security Group between multiple VPCs. However, you can copy a Security Group to create a new Security Group with the same rules in another VPC for the same AWS Account.
 - Security Groups are regional and can span AZs, but can't be cross-regional.
 - Outbound rules exist if you need to connect your server to a different service such as an API endpoint or a DB backend. You need to enable the ALLOW rule for the correct port though so that traffic can leave EC2 and enter the other AWS service.
@@ -695,7 +725,7 @@ AWS WAF is a web application that lets you allow or block the HTTP(s) requests t
   - The length of the request
   - Any presence of SQL code (likely a SQL injection attempt)
   - Any presence of a script (likely a cross-site scripting attempt)
-- You can also use NACLs to block malicious IP addresses, prevent SQL injections / XSS, and block requests from specific countries. However, it is good form to practice defense in depth. 
+- You can also use NACLs to block malicious IP addresses, prevent SQL injections / XSS, and block requests from specific countries. However, it is good form to practice defense in depth.
 - Denying or blocking malicious users at the WAF level has the added advantage of protecting your AWS ecosystem at its outermost border.
 
 ## CloudWatch
@@ -738,11 +768,11 @@ Within the storage and content delivery domains, CloudWatch can inform you about
 - You can stream custom log files for further insights.
 
 ### CloudWatch Events:
-- Amazon CloudWatch Events delivers a near real-time stream of system events that describe changes in AWS resources. 
+- Amazon CloudWatch Events delivers a near real-time stream of system events that describe changes in AWS resources.
 - You can use events to trigger lambdas for example while using alarms to inform you that something went wrong.
 
 ### CloudWatch Alarms:
-- CloudWatch alarms send notifications or automatically make changes to the resources you are monitoring based on rules that you define. 
+- CloudWatch alarms send notifications or automatically make changes to the resources you are monitoring based on rules that you define.
 - For example, you can create custom CloudWatch alarms which will trigger notifications such as surpassing a set billing threshold.
 - CloudWatch alarms have two states of either `ok` or `alarm`
 
@@ -762,21 +792,21 @@ Within the storage and content delivery domains, CloudWatch can inform you about
 AWS CloudTrail is a service that enables governance, compliance, operational auditing, and risk auditing of your AWS account. With it, you can log, continuously monitor, and retain account activity related to actions across your AWS infrastructure. CloudTrail provides event history of your AWS account activity, including actions taken through the AWS Management Console, AWS SDKs, command line tools, API calls, and other AWS services. It is a regional service, but you can configure CloudTrail to collect trails in all regions.
 
 ### CloudTrail Key Details:
-- CloudTrail Events logs API calls or activities. 
+- CloudTrail Events logs API calls or activities.
 - CloudTrail Events stores the last 90 days of events in its Event History. This is enabled by default and is no additional cost.
 - This event history simplifies security analysis, resource change tracking, and troubleshooting.
-- There are two types of events that can be logged in CloudTrail: management events and data events. 
-- Management events provide information about management operations that are performed on resources in your AWS account. 
+- There are two types of events that can be logged in CloudTrail: management events and data events.
+- Management events provide information about management operations that are performed on resources in your AWS account.
 - Think of Management events as things normally done by people when they are in AWS. Examples:
   - a user sign in
   - a policy changed
   - a newly created security configuration
   - a logging rule deletion
-- Data events provide information about the resource operations performed on or in a resource. 
+- Data events provide information about the resource operations performed on or in a resource.
 - Think of Data events as things normally done by software when hitting various AWS endpoints. Examples:
   - S3 object-level API activity
-  - Lambda function execution activity 
-- By default, CloudTrail logs management events, but not data events. 
+  - Lambda function execution activity
+- By default, CloudTrail logs management events, but not data events.
 - By default, CloudTrail Events log files are encrypted using Amazon S3 server-side encryption (SSE). You can also choose to encrypt your log files with an AWS Key Management Service (AWS KMS) key. As these logs are stored in S3, you can define Amazon S3 lifecycle rules to archive or delete log files automatically. If you want notifications about log file delivery and validation, you can set up Amazon SNS notifications.
 
 ## Elastic File System (EFS)
@@ -858,11 +888,11 @@ RDS is a managed service that makes it easy to set up, operate, and scale a rela
 
 ### RDS Read Replicas:
 - Read Replication is exclusively used for performance enhancement.
-- With a Read Replica configuration, EC2 connects to the RDS backend using a DNS address and every write that is received by the master database is also passed onto a DB secondary so that it becomes a perfect copy of the master. This has the overall effect of reducing the number of transactions on the master because the secondary DBs can be queried for the same data. 
+- With a Read Replica configuration, EC2 connects to the RDS backend using a DNS address and every write that is received by the master database is also passed onto a DB secondary so that it becomes a perfect copy of the master. This has the overall effect of reducing the number of transactions on the master because the secondary DBs can be queried for the same data.
 - However, if the master DB were to fail, there is no automatic failover. You would have to manually create a new connection string to sync with one of the read replicas so that it becomes a master on its own. Then you’d have to update your EC2 instances to point at the read replica. You can have up to have copies of your master DB with read replication.
 - You can promote read replicas to be their very own production database if needed.
 - Read replicas are supported for all six flavors of DB on top of RDS.
-- Each Read Replica will have its own DNS endpoint. 
+- Each Read Replica will have its own DNS endpoint.
 - Automated backups must be enabled in order to use read replicas.
 - You can have read replicas with Multi-AZ turned on or have the read replica in an entirely separate region. You can have even have read replicas of read replicas, but watch out for latency or replication lag.
 The caveat for Read Replicas is that they are subject to small amounts of replication lag. This is because they might be missing some of the latest transactions as they are not updated as quickly as primaries. Application designers need to consider which queries have tolerance to slightly stale data. Those queries should be executed on the read replica, while those demanding completely up-to-date data should run on the primary node.
@@ -878,20 +908,20 @@ Automated backups are enabled by default. The backup data is stored freely up to
 - When you go to restore a DB via automated backups or DB snapshots, the result is the provisioning of an entirely new RDS instance with its own DB endpoint in order to be reached.
 
 ### RDS Security:
-- You can authenticate to your DB instance using IAM database authentication. IAM database authentication works with MySQL and PostgreSQL. With this authentication method, you don't need to use a password when you connect to a DB instance. Instead, you use an authentication token. 
+- You can authenticate to your DB instance using IAM database authentication. IAM database authentication works with MySQL and PostgreSQL. With this authentication method, you don't need to use a password when you connect to a DB instance. Instead, you use an authentication token.
 - An authentication token is a unique string that Amazon RDS generates on request. Authentication tokens have a lifetime of 15 minutes. You don't need to store user credentials in the database because authentication is managed externally using IAM.
 - IAM database authentication provides the following benefits:
   - Network traffic to and from the database is encrypted using Secure Sockets Layer (SSL).
   - You can use IAM to centrally manage access to your database resources, instead of managing access individually on each DB instance.
   - For applications running on Amazon EC2, you can use profile credentials specific to your EC2 instance to access your database instead of a password, for greater security
 - Encryption at rest is supported for all six flavors of DB for RDS. Encryption is done using the AWS KMS service. Once the RDS instance is encryption enabled, the data in the DB becomes encrypted as well as all backups (automated or snapshots) and read replicas.
-- After your data is encrypted, Amazon RDS handles authentication of access and decryption of your data transparently with a minimal impact on performance. You don't need to modify your database client applications to use encryption. 
+- After your data is encrypted, Amazon RDS handles authentication of access and decryption of your data transparently with a minimal impact on performance. You don't need to modify your database client applications to use encryption.
 - Amazon RDS encryption is currently available for all database engines and storage types. However, you need to ensure that the underlying instance type supports DB encryption.
-- You can only enable encryption for an Amazon RDS DB instance when you create it, not after the DB instance is created and 
-DB instances that are encrypted can't be modified to disable encryption. 
+- You can only enable encryption for an Amazon RDS DB instance when you create it, not after the DB instance is created and
+DB instances that are encrypted can't be modified to disable encryption.
 
 ### RDS Enhanced Monitoring:
-- RDS comes with an Enhanced Monitoring feature. Amazon RDS provides metrics in real time for the operating system (OS) that your DB instance runs on. You can view the metrics for your DB instance using the console, or consume the Enhanced Monitoring JSON output from CloudWatch Logs in a monitoring system of your choice. 
+- RDS comes with an Enhanced Monitoring feature. Amazon RDS provides metrics in real time for the operating system (OS) that your DB instance runs on. You can view the metrics for your DB instance using the console, or consume the Enhanced Monitoring JSON output from CloudWatch Logs in a monitoring system of your choice.
 - By default, Enhanced Monitoring metrics are stored in the CloudWatch Logs for 30 days. To modify the amount of time the metrics are stored in the CloudWatch Logs, change the retention for the RDSOSMetrics log group in the CloudWatch console.
 - Take note that there are key differences between CloudWatch and Enhanced Monitoring Metrics. CloudWatch gathers metrics about CPU utilization from the hypervisor for a DB instance, and Enhanced Monitoring gathers its metrics from an agent on the instance. As a result, you might find differences between the measurements, because the hypervisor layer performs a small amount of work that can be picked up and interpreted as part of the metric.
 
@@ -919,17 +949,17 @@ Aurora is the AWS flagship DB known to combine the performance and availability 
 ### Aurora Serverless:
 - Aurora Serverless is a simple, on-demand, autoscaling configuration for the MySQL/PostgreSQl-compatible editions of Aurora. With Aurora Serveress, your instance automatically scales up or down and starts on or off based on your application usage. The use cases for this service are infrequent, intermittent, and unpredictable workloads.
 - This also makes it possible cheaper because you only pay per invocation
-- With Aurora Serverless, you simply create a database endpoint, optionally specify the desired database capacity range, and connect your applications. 
+- With Aurora Serverless, you simply create a database endpoint, optionally specify the desired database capacity range, and connect your applications.
 - It removes the complexity of managing database instances and capacity. The database will automatically start up, shut down, and scale to match your application's needs. It will seamlessly scale compute and memory capacity as needed, with no disruption to client connections.
 
 ### Aurora Cluster Endpoints:
 - Using cluster endpoints, you map each connection to the appropriate instance or group of instances based on your use case.
 - You can connect to cluster endpoints associated with different roles or jobs across your Aurora DB. This is because different instances or groups of instances perform different functions.
-- For example, to perform DDL statements you can connect to the primary instance. To perform queries, you can connect to the reader endpoint, with Aurora automatically performing load-balancing among all the Aurora Replicas behind the reader endpoint. For diagnosis or tuning, you can connect to a different endpoint to examine details. 
+- For example, to perform DDL statements you can connect to the primary instance. To perform queries, you can connect to the reader endpoint, with Aurora automatically performing load-balancing among all the Aurora Replicas behind the reader endpoint. For diagnosis or tuning, you can connect to a different endpoint to examine details.
 - Since the entryway for your DB Instance remains the same after a failover, your application can resume database operation without the need for manual administrative intervention for any of your endpoints.
 
 ### Aurora Reader Endpoints:
-- Aurora Reader endpoints are a subset of the above idea of cluster endpoints. Use the reader endpoint for read operations, such as queries. By processing those statements on the read-only Aurora Replicas, this endpoint reduces the overhead on the primary instance. 
+- Aurora Reader endpoints are a subset of the above idea of cluster endpoints. Use the reader endpoint for read operations, such as queries. By processing those statements on the read-only Aurora Replicas, this endpoint reduces the overhead on the primary instance.
 - There are up 15 Aurora Read Replicas because a Reader Endpoint to help handle read-only query traffic.
 - It also helps the cluster to scale the capacity to handle simultaneous SELECT queries, proportional to the number of Aurora Replicas in the cluster. Each Aurora DB cluster has one reader endpoint.
 - If the cluster contains one or more Aurora Replicas, the reader endpoint load-balances each connection request among the Aurora Replicas. In that case, you can only perform read-only statements such as SELECT in that session. If the cluster only contains a primary instance and no Aurora Replicas, the reader endpoint connects to the primary instance directly. In that case, you can perform write operations through the endpoint.
@@ -955,22 +985,22 @@ Amazon DynamoDB is a key-value and document database that delivers single-digit 
   - It normalizes data and stores it on multiple tables that require multiple queries to write to disk.
   - It generally incurs the performance costs of an ACID-compliant transaction system.
   - It uses expensive joins to reassemble required views of query results.
-- High cardinality is good for DynamoDB I/O performance. The more distinct your partition key values are, the better.  It makes it so that the requests sent will be spread across the partitioned space. 
+- High cardinality is good for DynamoDB I/O performance. The more distinct your partition key values are, the better.  It makes it so that the requests sent will be spread across the partitioned space.
 - DynamoDB makes use of parallel processing to achieve predictable performance. You can visualise each partition or node as an independent DB server of fixed size with each partition or node responsible for a defined block of data. In SQL terminology, this concept is known as sharding but of course DynamoDB is not a SQL-based DB. With DynamoDB, data is stored on Solid State Drives (SSD).
 
 ### DynamoDB Accelerator (DAX):
 - Amazon DynamoDB Accelerator (DAX) is a fully managed, highly available, in-memory cache that can reduce Amazon DynamoDB response times from milliseconds to microseconds, even at millions of requests per second.
-- With DAX, your applications remain fast and responsive, even when unprecedented request volumes come your way. There is no tuning required. 
+- With DAX, your applications remain fast and responsive, even when unprecedented request volumes come your way. There is no tuning required.
 - DAX lets you scale on-demand out to a ten-node cluster, giving you millions of requests per second.
 - DAX does more than just increase read performance by having write through cache. This improves write performance as well.
 - Just like DynamoDB, DAX is fully managed. You no longer need to worry about management tasks such as hardware or software provisioning, setup and configuration, software patching, operating a reliable, distributed cache cluster, or replicating data over multiple instances as you scale.
 - This means there is no need for developers to manage the caching logic. DAX is completely compatible with existing DynamoDB API calls.
 - DAX enables you to provision one DAX cluster for multiple DynamoDB tables, multiple DAX clusters for a single DynamoDB table or somewhere in between giving you maximal flexibility.
-- DAX is designed for HA so in the event of a failure of one AZ, it will fail over to one of its replicas in another AZ. This is also managed automatically. 
+- DAX is designed for HA so in the event of a failure of one AZ, it will fail over to one of its replicas in another AZ. This is also managed automatically.
 
 ### DynamoDB Streams:
 - A DynamoDB stream is an ordered flow of information about changes to items in an Amazon DynamoDB table. When you enable a stream on a table, DynamoDB captures information about every modification to data items in the table.
-- Amazon DynamoDB is integrated with AWS Lambda so that you can create triggers—pieces of code that automatically respond to events in DynamoDB Streams. 
+- Amazon DynamoDB is integrated with AWS Lambda so that you can create triggers—pieces of code that automatically respond to events in DynamoDB Streams.
 - Immediately after an item in the table is modified, a new record appears in the table's stream. AWS Lambda polls the stream and invokes your Lambda function synchronously when it detects new stream records. The Lambda function can perform any actions you specify, such as sending a notification or initiating a workflow.
 - With triggers, you can build applications that react to data modifications in DynamoDB tables.
 - Whenever an application creates, updates, or deletes items in the table, DynamoDB Streams writes a stream record with the primary key attribute(s) of the items that were modified. A stream record contains information about a data modification to a single item in a DynamoDB table. You can configure the stream so that the stream records capture additional information, such as the "before" and "after" images of modified items.
@@ -979,7 +1009,7 @@ Amazon DynamoDB is a key-value and document database that delivers single-digit 
 - Global Tables is a multi-region, multi-master replication solution for fast local performance of globally distributed apps.
 - Global Tables replicates your Amazon DynamoDB tables automatically across your choice of AWS regions.
 - It is based on DynamoDB streams and is multi-region redundant for data recovery or high availability purposes. Application failover is as simple as redirecting your application’s DynamoDB calls to another AWS region.
-- Global Tables eliminates the difficult work of replicating data between regions and resolving update conflicts, enabling you to focus on your application’s business logic. You do not need to rewrite your applications to make use of Global Tables. 
+- Global Tables eliminates the difficult work of replicating data between regions and resolving update conflicts, enabling you to focus on your application’s business logic. You do not need to rewrite your applications to make use of Global Tables.
 - Replication latency with Global Tables is typically under one second.
 
 
@@ -989,10 +1019,10 @@ Amazon DynamoDB is a key-value and document database that delivers single-digit 
  Amazon Redshift is a fully managed, petabyte-scale data warehouse service in the cloud. The Amazon Redshift service manages all of the work of setting up, operating, and scaling a data warehouse. These tasks include provisioning capacity, monitoring and backing up the cluster, and applying patches and upgrades to the Amazon Redshift engine.
 
 ### Redshift Key Details:
--  An Amazon Redshift cluster is a set of nodes which consists of a leader node and one or more compute nodes. The type and number of compute nodes that you need depends on the size of your data, the number of queries you will execute, and the query execution performance that you need. 
+-  An Amazon Redshift cluster is a set of nodes which consists of a leader node and one or more compute nodes. The type and number of compute nodes that you need depends on the size of your data, the number of queries you will execute, and the query execution performance that you need.
 - Redshift is used for business intelligence and pulls in very large and complex datasets to perform complex queries in order to gather insights from the data.
 - It fits the use case of Online Analytical Processing (OLAP). Redshift is a powerful technology for data discovery including capabilities for almost limitless report viewing, complex analytical calculations, and predictive “what if” scenario (budget, forecast, etc.) planning.
-- Depending on your data warehousing needs, you can start with a small, single-node cluster and easily scale up to a larger, multi-node cluster as your requirements change. You can add or remove compute nodes to the cluster without any interruption to the service. 
+- Depending on your data warehousing needs, you can start with a small, single-node cluster and easily scale up to a larger, multi-node cluster as your requirements change. You can add or remove compute nodes to the cluster without any interruption to the service.
 - If you intend to keep your cluster running for a year or longer, you can save money by reserving compute nodes for a one-year or three-year period.
 - Snapshots are point-in-time backups of a cluster. These backups are enabled by default with a 1 day retention period. The maximum retention period is 35 days.
 - Redshift can also asynchronously replicate your snapshots to a different region if desired.
@@ -1007,7 +1037,7 @@ Amazon DynamoDB is a key-value and document database that delivers single-digit 
   - Data transfer within a VPC (but not outside of it)
 - Redshift is not multi-AZ, if you want multi-AZ you will need to spin up a separate cluster ingesting the same input. You can also manually restore snapshots to a new AZ in the event of an outage.
 - When you provision an Amazon Redshift cluster, it is locked down by default so nobody has access to it. To grant other users inbound access to an Amazon Redshift cluster, you associate the cluster with a security group.
-- Amazon Redshift provides free storage for snapshots that is equal to the storage capacity of your cluster until you delete the cluster. After you reach the free snapshot storage limit, you are charged for any additional storage at the normal rate. Because of this, you should evaluate how many days you need to keep automated snapshots and configure their retention period accordingly, and delete any manual snapshots that you no longer need. 
+- Amazon Redshift provides free storage for snapshots that is equal to the storage capacity of your cluster until you delete the cluster. After you reach the free snapshot storage limit, you are charged for any additional storage at the normal rate. Because of this, you should evaluate how many days you need to keep automated snapshots and configure their retention period accordingly, and delete any manual snapshots that you no longer need.
 - Regardless of whether you enable automated snapshots, you can take a manual snapshot whenever you want. Amazon Redshift will never automatically delete a manual snapshot. Manual snapshots are retained even after you delete your Redshift cluster. Because manual snapshots accrue storage charges, it’s important that you manually delete them if you no longer need them
 
 ## Redshift Spectrum:
@@ -1015,14 +1045,14 @@ Amazon DynamoDB is a key-value and document database that delivers single-digit 
 - Redshift Spectrum queries employ massive parallelism to execute very fast against large datasets. Much of the processing occurs in the Redshift Spectrum layer, and most of the data remains in Amazon S3.
 - Redshift Spectrum queries use much less of your cluster's processing capacity than other queries.
 - The cluster and the data files in Amazon S3 must be in the same AWS Region.
-- External S3 tables are read-only. You can't perform insert, update, or delete operations on external tables. 
+- External S3 tables are read-only. You can't perform insert, update, or delete operations on external tables.
 
 ## Redshift Enhanced VPC Routing:
-- When you use Amazon Redshift Enhanced VPC Routing, Redshift forces all traffic (such as COPY and UNLOAD traffic) between your cluster and your data repositories through your Amazon VPC. 
+- When you use Amazon Redshift Enhanced VPC Routing, Redshift forces all traffic (such as COPY and UNLOAD traffic) between your cluster and your data repositories through your Amazon VPC.
 - If Enhanced VPC Routing is not enabled, Amazon Redshift routes traffic through the Internet, including traffic to other services within the AWS network.
 - By using Enhanced VPC Routing, you can use standard VPC features, such as VPC security groups, network access control lists (ACLs), VPC endpoints, VPC endpoint policies, internet gateways, and Domain Name System (DNS) servers.
 
-  
+
 ## ElastiCache
 
 ### ElastiCache Simplified:
@@ -1032,7 +1062,7 @@ The ElastiCache service makes it easy to deploy, operate, and scale an in-memory
 - The service is great for improving the performance of web applications by allowing you to receive information locally instead of relying solely on relatively distant DBs.
 - Amazon ElastiCache offers fully managed Redis and Memcached for the most demanding applications that require sub-millisecond response times.
 - For data that doesn’t change frequently and is oftenly asked for, it makes a lot of sense to cache said data rather than querying it from the database.
-- Common configurations that improve DB performance include introducing read replicas of a DB primary and inserting a caching layer into the storage architecture. 
+- Common configurations that improve DB performance include introducing read replicas of a DB primary and inserting a caching layer into the storage architecture.
 - MemcacheD is for simple caching purposes with horizontal scaling and multi-threaded performance, but if you require more complexity for your caching environment then choose Redis.
 - A further comparison between MemcacheD and Redis for ElastiCache:
 ![Screen Shot 2020-06-18 at 8 18 34 PM](https://user-images.githubusercontent.com/13093517/85083820-edc1b480-b1a0-11ea-88b0-15f90bd60282.png)
@@ -1048,7 +1078,7 @@ Amazon Route 53 is a highly available and scalable Domain Name System (DNS) serv
 ### Route53 Key Details:
 - DNS is used to map human-readable domain names into an internet protocol address similarly to how phonebooks map company names with phone numbers.
 - AWS has its own domain registrar.
-- When you buy a domain name, every DNS address starts with an SOA (Start of Authority) record. The SOA record stores information about the name of the server that kicked off the transfer of ownership, the administrator who will now use the domain, the current metadata available, and the default number of seconds or TTL. 
+- When you buy a domain name, every DNS address starts with an SOA (Start of Authority) record. The SOA record stores information about the name of the server that kicked off the transfer of ownership, the administrator who will now use the domain, the current metadata available, and the default number of seconds or TTL.
 - NS records, or Name Server records, are used by the Top Level Domain hosts (.org, .com, .uk, etc.) to direct traffic to the Content servers. The Content DNS servers contain the authoritative DNS records.
 - Browsers talk to the Top Level Domains whenever they are queried and encounter domain name that they do not recognize.
   1. Browsers will ask for the authoritative DNS records associated with the domain.
@@ -1061,7 +1091,7 @@ Amazon Route 53 is a highly available and scalable Domain Name System (DNS) serv
   - **A records**: These are the fundamental type of DNS record. The “A” in A records stands for “address”. These records are used by a computer to directly pair a domain name to an IP address. IPv4 and IPv6 are both supported with "AAAA" refering to the IPv6 version. **A: URL -> IPv4** and **AAAA: URL -> IPv6**.
   - **CName records**: Also refered to as the Canonical Name. These records are used to resolve one domain name to another domain name. For example, the domain of the mobile version of a website may be a CName from the domain of the browser version of that same website rather than a separate IP address. This would allow mobile users who visit the site and to receive the mobile version. **CNAME: URL -> URL**.
   - **Alias records**: These records are used to map your domains to AWS resources such as load balancers, CDN endpoints, and S3 buckets. Alias records function similarly to CNames in the sense that you map one domain to another. The key difference though is that by pointing your Alias record at a service rather than a domain name, you have the ability to freely change your domain names if needed and not have to worry about what records might be mapped to it. Alias records give you dynamic functionality. **Alias: URL -> AWS Resource**.
-  - **PTR records**: These records are the opposite of an A record. PTR records map an IP to a domain and they are used in reverse DNS lookups as a way to obtain the domain name of an IP address. **PTR: IPv4 -> URL**. 
+  - **PTR records**: These records are the opposite of an A record. PTR records map an IP to a domain and they are used in reverse DNS lookups as a way to obtain the domain name of an IP address. **PTR: IPv4 -> URL**.
 - One other major difference between CNames and Alias records is that a CName cannot be used for the naked domain name (the apex record in your entire DNS configuration / the primary record to be used). CNames must always be secondary records that can map to another secondary record or the apex record. The primary must always be of type Alias or A Record in order to work.
 - Due to the dynamic nature of Alias records, they are often reccomended for most usecases and should be used when it is possible to.
 - TTL is the length that a DNS record is cached on either the resolving servers or the users own cache so that a fresher mapping of IP to domain can be retrieved. Time To Live is measured in seconds and the lower the TTL the faster DNS changes propagate across the internet. Most providers, for example, have a TTL that lasts 48 hours.
@@ -1120,29 +1150,29 @@ When an EC2 instance behind an ELB fails a health check, the ELB stops sending t
 - To enable IPv6 DNS resolution, you need to create a second DNS resource record so that the **ALIAS AAAA** record resolves to the load balancer along with the IPv4 record.
 - The X-Forwarded-For header, via the Proxy Protocol, is simply the idea for load balancers to forward the requester's IP address along with the actual request for information from the servers behind the LBs. Normally, the servers behind the LBs only see that the IP sending it traffic belongs to the Load Balancer. They usually have no idea about the true origin of the request as they only know about the computer (the LB) that asks them to do something. But sometimes we may want to route the original IP to the backend servers for specific use cases and have the LB’s IP address ignored. The X-Forwarded-For header makes this possible.
 - Sticky Sessions bind a given user to a specific instance throughout the duration of their stay on the application or website. This means all of their interactions with the application will be directed to the same host each time. If you need local disk for your application to work, sticky sessions are great as users are guaranteed consistent access to the same ephemeral storage on a particular instance. The downside of sticky sessions is that, if done improperly, it can defeat the purpose of load balancing. All traffic could hypothetically be bound to the same instance instead of being evenly distributed.
-- Path Patterns create a listener with rules to forward requests based on the URL path set within those user requests. This method, known as path-based routing, ensures that traffic can be specifically directed to multiple back-end services. 
+- Path Patterns create a listener with rules to forward requests based on the URL path set within those user requests. This method, known as path-based routing, ensures that traffic can be specifically directed to multiple back-end services.
 For example, with Path Patterns you can route general requests to one target group and requests to render images to another target group. So the URL, “www.example.com/” will be forwarded to a server that is used for general content while “www.example.com/photos” will be forwarded to another server that renders images.
 
 
 ### ELB Cross Zone Load Balancing:
 - Cross Zone load balancing guarantees even distribution across AZs rather than just within a single AZ.
-- If Cross Zone load balancing is disabled, each load balancer node distributes requests evenly across the registered instances in its Availability Zone only. 
+- If Cross Zone load balancing is disabled, each load balancer node distributes requests evenly across the registered instances in its Availability Zone only.
 - Cross Zone load balancing reduces the need to maintain equivalent numbers of instances in each enabled Availability Zone, and improves your application's ability to handle the loss of one or more instances.
-- However, it is still recommend that you maintain approximately equivalent numbers of instances in each enabled Availability Zone for higher fault tolerance. 
+- However, it is still recommend that you maintain approximately equivalent numbers of instances in each enabled Availability Zone for higher fault tolerance.
 - For environments where clients cache DNS lookups, incoming requests might favor one of the Availability Zones. Using Cross Zone load balancing, this imbalance in the request load is spread across all available instances in the region instead.
 
 ### ELB Security:
 - ELB supports SSL/TLS & HTTPS termination. Termination at load balancer is desired because decryption is resource and CPU intensive. Putting the decryption burden on the load balancer enables the EC2 instances to spend their processing power on application tasks, which helps improve overall performance.
 -  Elastic Load Balancers (along with CloudFront) support Perfect Forward Secrecy. This is a feature that provides additional safeguards against the eavesdropping of encrypted data in transit through the use of a uniquely random session key. This is done by ensuring that the in-use part of an encryption system automatically and frequently changes the keys it uses to encrypt and decrypt information. So if this latest key is compromised at all, it will only expose a small portion of the user's recent data.
-- Classic Load Balancers do not support Server Name Indication (SNI). SNI allows the server (the LB in this case) to safely host multiple TLS Certificates for multiple sites all under a single IP address (the Alias record or CName record in this case). To allow SNI, you have to use an Application Load Balancer instead or use it with a CloudFront web distribution. 
+- Classic Load Balancers do not support Server Name Indication (SNI). SNI allows the server (the LB in this case) to safely host multiple TLS Certificates for multiple sites all under a single IP address (the Alias record or CName record in this case). To allow SNI, you have to use an Application Load Balancer instead or use it with a CloudFront web distribution.
 
 ## Auto Scaling
 
 ### Auto Scaling Simplified:
-AWS Auto Scaling lets you build scaling plans that automate how groups of different resources respond to changes in demand. You can optimize availability, costs, or a balance of both. AWS Auto Scaling automatically creates all of the scaling policies and sets targets for you based on your preference. 
+AWS Auto Scaling lets you build scaling plans that automate how groups of different resources respond to changes in demand. You can optimize availability, costs, or a balance of both. AWS Auto Scaling automatically creates all of the scaling policies and sets targets for you based on your preference.
 
 ### Auto Scaling Key Details:
-- Auto Scaling is a major benefit from the cloud's economies of scale so if you ever have a requirement for scaling, automatically think of using the Auto Scaling service. 
+- Auto Scaling is a major benefit from the cloud's economies of scale so if you ever have a requirement for scaling, automatically think of using the Auto Scaling service.
 - Auto Scaling has three components:
   - **Groups**: These are logical components. A webserver group of EC2 instances, a database group of RDS instances, etc.
   - **Configuration Templates**: Groups use a template to configure and launch new instances to better match the scaling needs. You can specify information for the new instances like the AMI to use, the instance type, security groups, block devices to associate with the instances, and more.
@@ -1151,9 +1181,9 @@ AWS Auto Scaling lets you build scaling plans that automate how groups of differ
 
 ![Screen Shot 2020-06-19 at 4 44 18 PM](https://user-images.githubusercontent.com/13093517/85178368-50bc5580-b24c-11ea-9acc-45ca5742e889.png)
 
-- When you use Auto Scaling, your applications gain the following benefits: 
-  - **Better fault tolerance**: Auto Scaling can detect when an instance is unhealthy, terminate it, and launch an instance to replace it. You can also configure Auto Scaling to use multiple Availability Zones. If one Availability Zone becomes unavailable, Auto Scaling can launch instances in another one to compensate. 
-  - **Better availability**: Auto Scaling can help you ensure that your application always has the right amount of capacity to handle the current traffic demands. 
+- When you use Auto Scaling, your applications gain the following benefits:
+  - **Better fault tolerance**: Auto Scaling can detect when an instance is unhealthy, terminate it, and launch an instance to replace it. You can also configure Auto Scaling to use multiple Availability Zones. If one Availability Zone becomes unavailable, Auto Scaling can launch instances in another one to compensate.
+  - **Better availability**: Auto Scaling can help you ensure that your application always has the right amount of capacity to handle the current traffic demands.
 - When it comes to actualing scaling your instance groups, the Auto Scaling service is flexible and can be done in various ways:
   - Auto Scaling can scale based on the demand placed on your instances. This option automates the scaling process by specifying certain thresholds that, when reached, will trigger the scaling. This is the most popular implementation of Auto Scaling.
   - Auto Scaling can ensure the current number of instances at all times. This option will always maintain the number of servers you want running even when they fail.
@@ -1165,9 +1195,14 @@ AWS Auto Scaling lets you build scaling plans that automate how groups of differ
 - Auto Scaling allows you to suspend and then resume one or more of the Auto Scaling processes in your Auto Scaling Group. This can be very useful when you want to investigate a problem in your application without triggering the Auto Scaling process when making changes.
 - You can specify your launch configuration with multiple Auto Scaling groups. However, you can only specify one launch configuration for an Auto Scaling group at a time.
 - You cannot modify a launch configuration after you've created it. If you want to change the launch configuration for an Auto Scaling group, you must create a new launch configuration and update your Auto Scaling group to inherit this new launch configuration.
+### Autoscaling Strategy Policy
+- **Target Tracking Scaling**: You select a scaling metric and set a target value. Amazon EC2 Auto Scaling creates and manages the CloudWatch alarms that trigger the scaling policy and calculates the scaling adjustment based on the metric and the target value. The scaling policy adds or removes capacity as required to keep the metric at, or close to, the specified target value. E.g. Policy to keep the average aggregate CPU utilization at 40 percent, request count per target at 1000.
+- **Step Scaling**: You need to create CloudWatch alarms and specify the high and low thresholds for the alarms. When increase or decrease an adjustment is applied (step adjustments).
+- **Simple Scaling**: You need to create CloudWatch alarms and specify the high and low thresholds for the alarms.
+- **Scaling Based on AWS SQS**: Can use metrics like ApproximateNumberOfMessagesVisible for *target tracking*.
 
 ### Auto Scaling Default Termination Policy:
-- The default termination policy for an Auto Scaling Group is to automatically terminate a stopped instance, so unless you've configured it to do otherwise, stopping an instance will result in termination regardless if you wanted that to happen or not. A new instance will be spun up in its place. 
+- The default termination policy for an Auto Scaling Group is to automatically terminate a stopped instance, so unless you've configured it to do otherwise, stopping an instance will result in termination regardless if you wanted that to happen or not. A new instance will be spun up in its place.
 - The default termination policy will spare instances that you tell it in case some servers are running critical systems or applications. These critical servers are protected from "scale in", which is just the deletion process of instances deemed superfluous to requirements.
 - The default termination policy is designed to help ensure that your network architecture spans Availability Zones evenly. With the default termination policy, the behavior of the Auto Scaling group is as follows:
   - If there are instances in multiple Availability Zones, it will terminate an instance from the Availability Zone with the most instances. If there is more than one Availability Zone with the same max number of instances, it will choose the Availability Zone where instances use the oldest launch configuration.
@@ -1178,7 +1213,7 @@ AWS Auto Scaling lets you build scaling plans that automate how groups of differ
 ![Screen Shot 2020-06-19 at 5 19 02 PM](https://user-images.githubusercontent.com/13093517/85180270-0093c200-b251-11ea-97e3-ed9a80ee5d65.png)
 
 ## Auto Scaling Cooldown Period:
-- The cooldown period is a configurable setting for your Auto Scaling Group that helps to ensure that it doesn't launch or terminate additional instances before the previous scaling activity takes effect. 
+- The cooldown period is a configurable setting for your Auto Scaling Group that helps to ensure that it doesn't launch or terminate additional instances before the previous scaling activity takes effect.
 - After the Auto Scaling Group scales using a policy, it waits for the cooldown period to complete before resuming further scaling activities if needed.
 - The default waiting period is 300 seconds, but this can be modified.
 
@@ -1201,7 +1236,7 @@ VPC lets you provision a logically isolated section of the AWS cloud where you c
   - a route table
   - a NACL
   - a security group
-  
+
 ![Screen Shot 2020-06-19 at 6 26 37 PM](https://user-images.githubusercontent.com/13093517/85183681-8cf6b280-b25a-11ea-8b54-d1e54ba754a6.png)
 
 - These components, which will be explained in further depth in case they are not already known, actually correspond to the traffic flow for how data will reach your instances. Whether the traffic originates from outside of the VPC or from within it, it must first go through the route table by way of the router in order to know where the desired destination is. Once that is known, the traffic then passes through subnet level security as described by the NACL. If the NACL deems the traffic as valid, the traffic then passes through to the instance level security as described by the security group. If the traffic hasn't been dropped at this point, only then will it reach its intended instance.
@@ -1211,10 +1246,10 @@ VPC lets you provision a logically isolated section of the AWS cloud where you c
 - The IP range of a default VPC is always **/16**.
 - When creating IP ranges for your subnets, the **/16** CIDR block is the largest range of IPs that can be used. This is because subnets must have just as many IPs or fewers IPs than the VPC it belongs to. A **/28** CIDR block is the smallest IP range available for subnets.
 - With CIDR in general, a **/32** denotes a single IP address and **/0** refers to the entire network The higher you go in CIDR, the more narrow the IP range will be.
-- The above information about IPs is in regards to both public and private IP addresses. 
+- The above information about IPs is in regards to both public and private IP addresses.
 - Private IP addresses are not reachable over the Internet and instead are used for communication between the instances in your VPC. When you launch an instance into a VPC, a private IP address from the IPv4 address range of the subnet is assigned to the default network interface (eth0) of the instance.
 - This means that all instances within a VPC has a private IP, but only those selected to communicate with the external world have a public IP.
-- When you launch an instance into a subnet that has public access via an Internet Gateway, both a public IP address and a private IP address are created. The public IP address is instead assigned to the primary network interface (eth0) that's created for the instance. Externally, the public IP address is mapped to the private IP address through network address translation (NAT). 
+- When you launch an instance into a subnet that has public access via an Internet Gateway, both a public IP address and a private IP address are created. The public IP address is instead assigned to the primary network interface (eth0) that's created for the instance. Externally, the public IP address is mapped to the private IP address through network address translation (NAT).
 - You can optionally associate an IPv6 CIDR block with your VPC and subnets, and assign IPv6 addresses from that block to the resources in your VPC.
 - VPCs are region specific and you can have up to five VPCs per region.
 - By default, AWS is configured to have one subnet in each AZ of the regions where your application is.
@@ -1225,6 +1260,22 @@ VPC lets you provision a logically isolated section of the AWS cloud where you c
 
 - Security groups can span subnets, but do not span VPCs. ICMP ensures that instances from one security group can ping others in a different security group. It is IPv4 and IPv6 compatible.
 
+### VPC Tenancy
+- There are 2 values for vpc tenancy: Default, and dedicated.
+- Default: Shared hardware by default, but you can specify a different tenancy during instance launch.
+- Dedicated: You cannot specify a tenancy of default during instance launch.
+- You can change tenancy from dedicated to default.
+- If you launch an instance with default tenancy in a VPC with dedicate tenancy, your instance will have dedicated tenancy
+- If you launch an instance with dedicated tenancy in a VPC with default tenancy, your instance will have dedicated tenancy
+
+
+| Launch configuration tenancy  | VPC tenancy = default | VPC tenancy = dedicated |
+| ------------- | ------------- | ------------- |
+| not specified  | shared-tenancy instance  | dedicated instance  |
+| default  | shared-tenancy instance  | dedicated instance  |
+| dedicated  | dedicated instance  | dedicated instance  |
+
+
 ### VPC Subnets:
 - If a network has a large number of hosts without logically grouped subdivisions, managing the many hosts can be a tedious job. Therefore you use subnets to divide a network so that management becomes easier.
 - When you create a subnet, be sure to specify which VPC you want to place it in. You can assign both IPv4 and IPv6 ranges to your subnets.
@@ -1234,24 +1285,24 @@ VPC lets you provision a logically isolated section of the AWS cloud where you c
 - Amazon always reserves five IP addresses within a subnet. The first four IP addresses and the last IP address of each subnet CIDR block will always be unavailable for use.
 
 ### Network Access Control Lists:
-- Network Access Control Lists (or NACLs) are like security groups but for subnets rather than instances. The main difference between security groups and NACLs is that security groups are *stateless*, meaning you can perform both allow and deny rules that may be divergent, depending if traffic is inbound or outbound, for that rule. 
-- The following table highlights the differences between NACLs and Subnets. 
+- Network Access Control Lists (or NACLs) are like security groups but for subnets rather than instances. The main difference between security groups and NACLs is that security groups are *stateless*, meaning you can perform both allow and deny rules that may be divergent, depending if traffic is inbound or outbound, for that rule.
+- The following table highlights the differences between NACLs and Subnets.
 
 | NACL | Security Group |
 | ------------- | ------------- |
-| Operates at the subnet level | Operates at the instance level | 
+| Operates at the subnet level | Operates at the instance level |
 | Supports allow rules and deny rules  | Supports allow rules only |
 | Is stateless: Return traffic must be explicitly allowed by rules  |  Is stateful: Return traffic is automatically allowed, regardless of any rules |
 | We process rules in order, starting with the lowest numbered rule, when deciding whether to allow traffic  |  We evaluate all rules before deciding whether to allow traffic |
 | Automatically applies to all instances in the subnets that it's associated with (therefore, it provides an additional layer of defense if the security group rules are too permissive) |  Applies to an instance only if someone specifies the security group when launching the instance, or associates the security group with the instance later on |
 - Because NACLs are stateless, you must also ensure that outbound rules exist alongside the inbound rules so that ingress and egress can flow smoothly.
 - The default NACL that comes with a new VPC has a default rule to allow all inbounds and outbounds. This means that it exists, but doesn't do anything as all traffic passes through it freely.
-- However, when you create a new NACL (instead of using the default that comes with the VPC) the default rules will deny all inbounds and outbounds. 
+- However, when you create a new NACL (instead of using the default that comes with the VPC) the default rules will deny all inbounds and outbounds.
 - If you create a new NACL, you must associate whichever desired subnets to it manually so that they can inherit the NACL’s rule set. If you don’t explicitly assign a subnet to an NACL, AWS will associate it with your default NACL.
 - NACLs are evaluated before security groups and you block malicious IPs with NACLs, not security groups.
 - A subnet can only follow the rules listed by one NACL at a time. However, a NACL can describe the rules for any number of subnets. The rules will take effect immediately.
-- Network ACL rules are evaluated by rule number, from lowest to highest, and executed immediately when a matching allow/deny rule is found. Because of this, order matters with your rule numbers. 
-- The lower the number of a rule on the list, the more seniority that rule will have. List your rules accordingly. 
+- Network ACL rules are evaluated by rule number, from lowest to highest, and executed immediately when a matching allow/deny rule is found. Because of this, order matters with your rule numbers.
+- The lower the number of a rule on the list, the more seniority that rule will have. List your rules accordingly.
 
 - If you are using NAT Gateway along with your NACL, you must ensure the availability of the NAT Gateway ephemeral port range within the rules of your NACL. Because NAT Gateway traffic can appear on any of range's ports for the duration of its connection, you must ensure that all possible ports are accounted for and open.
 - NACL can have a small impact on how EC2 instances in a private subnet will communicate with any service, including VPC Endpoints.
@@ -1260,20 +1311,30 @@ VPC lets you provision a logically isolated section of the AWS cloud where you c
 ### NAT Instances vs. NAT Gateways:
 - Attaching an Internet Gateway to a VPC allows instances with public IPs to directly access the internet. NAT does a similar thing, however it is for instances that do not have a public IP. It serves as an intermediate step which allow private instances to first masked their own private IP as the NAT's public IP before accessing the internet.
 - You would want your private instances to access the internet so that they can have normal software updates. NAT prevents any initiating of a connection from the internet.
-- **NAT instances** are individual EC2 instances that perform the function of providing private subnets a means to securely access the internet. 
+- **NAT instances** are individual EC2 instances that perform the function of providing private subnets a means to securely access the internet.
 - Because they are individual instances, High Availability is not a built-in feature and they can become a choke point in your VPC. They are not fault-tolerant and serve as a single point of failure. While it is possible to use auto-scaling groups, scripts to automate failover, etc. to prevent bottlenecking, it is far better to use the NAT Gateway as an alternative for a scalable solution.
+- Nat instance can be used as a bastion server
+- Security groups can be associated with a NAT instance
+- NAT instance supports port forwarding
+
+<img style="width: 70%" src="https://docs.aws.amazon.com/vpc/latest/userguide/images/nat-instance-diagram.png" />
+
 - **NAT Gateway** is a managed service that is composed of multiple instances linked together within an availability zone in order to achieve HA by default.
-- To achieve further HA and a zone-independent architecture, create a NAT gateway for each Availability Zone and configure your routing to ensure that resources use the NAT gateway in their corresponding Availability Zone. 
-- NAT instances are deprecated, but still useable. NAT Gateways are the prefered means to achieve Network Address Translation. 
+- To achieve further HA and a zone-independent architecture, create a NAT gateway for each Availability Zone and configure your routing to ensure that resources use the NAT gateway in their corresponding Availability Zone.
+- NAT instances are deprecated, but still useable. NAT Gateways are the prefered means to achieve Network Address Translation.
 - There is no need to patch NAT Gateways as the service is managed by AWS. You do need to patch NAT Instances though because they’re just individual EC2 instances.
 - Because communication must always be initiated from yout private instances, you need a route rule to route traffic from a private subnet to your NAT gateway.
 - Your NAT instance/gateway will have to live in a public subnet as your public subnet is the subnet configured to have internet access.
 - When creating NAT instances, it is important to remember that EC2 instances have source/destination checks on them by default. What these checks do is ensure that any traffic it comes across must be either generated by the instance or be the intended recipient of that traffic. Otherwise, the traffic is dropped because the EC2 instance is neither the source nor the destination.
 - So because NAT instances act as a sort of proxy, you *must* disable source/destination checks when musing a NAT instance.
 
+<img style="width: 70%" src="https://docs.aws.amazon.com/vpc/latest/userguide/images/nat-gateway-diagram.png" />
+
+For more information about NAT GW vs NAT instance check this documentation: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-comparison.html
+
 ### Bastion Hosts:
-- Bastion Hosts are special purpose computers designed and configured to withstand attacks. This server generally runs a single program and is stripped beyond this purpose in order to reduce attack vectors. 
-- The purpose of Bastion Hosts are to remotely access the instances behind the private subnet for system administration purposes without exposing the host via an internet gateway. 
+- Bastion Hosts are special purpose computers designed and configured to withstand attacks. This server generally runs a single program and is stripped beyond this purpose in order to reduce attack vectors.
+- The purpose of Bastion Hosts are to remotely access the instances behind the private subnet for system administration purposes without exposing the host via an internet gateway.
 - The best way to implement a Bastion Host is to create a small EC2 instance that only has a security group rule for a single IP address. This ensures maximum security.
 - It is perfectly fine to use a small instance rather than a large one because the instance will only be used as a jump server that connects different servers to each other.
 - If you are going to be RDPing or SSHing into the instances of your private subnet, use a Bastion Host. If you are going to be providing internet traffic into the instances of your private subnet, use a NAT.
@@ -1284,16 +1345,16 @@ VPC lets you provision a logically isolated section of the AWS cloud where you c
 - Route tables are used to make sure that subnets can communicate with each other and that traffic knows where to go.
 - Every subnet that you create is automatically associated with the main route table for the VPC.
 - You can have multiple route tables. If you do not want your new subnet to be associated with the default route table, you must specify that you want it associated with a different route table.
-- Because of this default behavior, there is a potential security concern to be aware of: if the default route table is public then the new subnets associated with it will also be public. 
+- Because of this default behavior, there is a potential security concern to be aware of: if the default route table is public then the new subnets associated with it will also be public.
 - The best practice is to ensure that the default route table where new subnets are associated with is private.
 - This means you ensure that there is no route out to the internet for the default route table. Then, you can create a custom route table that is public instead. New subnets will automatically have no route out to the internet. If you want a new subnet to be publically accessible, you can simply associate it with the custom route table.
 - Route tables can be configured to access endpoints (public services accessed privately) and not just the internet.
 
 ### Internet Gateway:
-- If the Internet Gateway is not attached to the VPC, which is the prerequisite for instances to be accessed from the internet, then natually instances in your VPC will not be reachable. 
+- If the Internet Gateway is not attached to the VPC, which is the prerequisite for instances to be accessed from the internet, then natually instances in your VPC will not be reachable.
 - If you want all of your VPC to remain private (and not just some subnets), then do not attach an IGW.
-- When a Public IP address is assigned to an EC2 instance, it is effectively registered by the Internet Gateway as a valid public endpoint. However, each instance is only aware of its private IP and not its public IP. Only the IGW knows of the public IPs that belong to instances. 
-- When an EC2 instance initiates a connection to the public internet, the request is sent using the public IP as its source even though the instance doesn't know a thing about it. This works because the IGW performs its own NAT translation where private IPs are mapped to public IPs and vice versa for traffic flowing into and out of the VPC. 
+- When a Public IP address is assigned to an EC2 instance, it is effectively registered by the Internet Gateway as a valid public endpoint. However, each instance is only aware of its private IP and not its public IP. Only the IGW knows of the public IPs that belong to instances.
+- When an EC2 instance initiates a connection to the public internet, the request is sent using the public IP as its source even though the instance doesn't know a thing about it. This works because the IGW performs its own NAT translation where private IPs are mapped to public IPs and vice versa for traffic flowing into and out of the VPC.
 - So when traffic from the internet is destined for an instance's public IP endpoint, the IGW receives it and forwards the traffic onto the EC2 instance using its internal private IP.
 - You can only have one IGW per VPC.
 - **Summary**: IGW connects *your VPC with the internet*.
@@ -1331,9 +1392,9 @@ VPC lets you provision a logically isolated section of the AWS cloud where you c
 
 
 ### VPC Endpoints:
-- VPC Endpoints ensure that you can connect your VPC to supported AWS services without requiring an internet gateway, NAT device, VPN connection, or AWS Direct Connect. Traffic between your VPC and other AWS services stay within the Amazon ecosystem and these Endpoints are virtual devices that are HA and without bandwidth constraints. 
+- VPC Endpoints ensure that you can connect your VPC to supported AWS services without requiring an internet gateway, NAT device, VPN connection, or AWS Direct Connect. Traffic between your VPC and other AWS services stay within the Amazon ecosystem and these Endpoints are virtual devices that are HA and without bandwidth constraints.
 - These work basically by attaching an ENI to an EC2 instance that can easily communicate to a wide range of AWS services.
-- **Gateway Endpoints** rely on creating entries in a route table and pointing them to private endpoints used for S3 or DynamoDB. Gateway Endpoints are mainly just a target that you set. 
+- **Gateway Endpoints** rely on creating entries in a route table and pointing them to private endpoints used for S3 or DynamoDB. Gateway Endpoints are mainly just a target that you set.
 - **Interface Endpoints** use AWS PrivateLink and have a private IP address so they are their own entity and not just a target in a route table.  Because of this, they cost $.01/hour. Gateway Endpoints are free as they’re just a new route in to set.
 - Interface Endpoint provisions an Elastic Network interface or ENI (think network card) within your VPC. They serve as an entry and exit for traffic going to and from another supported AWS service. It uses a DNS record to direct your traffic to the private IP address of the interface. Gateway Endpoint uses route prefix in your route table to direct traffic meant for S3 or DynamoDB to the Gateway Endpoint (think 0.0.0.0/0 -> igw).
 - To secure your Interface Endpoint, use Security Groups. But to secure Gateway Endpoint, use VPC Endpoint Policies.
@@ -1342,7 +1403,7 @@ VPC lets you provision a logically isolated section of the AWS cloud where you c
 ### AWS PrivateLink:
 - AWS PrivateLink simplifies the security of data shared with cloud-based applications by eliminating the exposure of data to the public Internet. AWS PrivateLink provides private connectivity between different VPCs, AWS services, and on-premises applications, securely on the Amazon network.
 - It's similar to the AWS Direct Connect service in that it establishes private connections to the AWS cloud, except Direct Connect links on-premises environments to AWS. PrivateLink, on the other hand, secures traffic from VPC environments which are already in AWS.
-- This is useful because different AWS services often talk to each other over the internet. If you do not want that behavior and instead want AWS services to only communicate within the AWS network, use AWS PrivateLink. By not traversing the Internet, PrivateLink reduces the exposure to threat vectors such as brute force and distributed denial-of-service attacks. 
+- This is useful because different AWS services often talk to each other over the internet. If you do not want that behavior and instead want AWS services to only communicate within the AWS network, use AWS PrivateLink. By not traversing the Internet, PrivateLink reduces the exposure to threat vectors such as brute force and distributed denial-of-service attacks.
 - PrivateLink allows you to publish an "endpoint" that others can connect with from their own VPC. It's similar to a normal VPC Endpoint, but instead of connecting to an AWS service, people can connect to your endpoint.
 - Further, you'd want to use private IP connectivity and security groups so that your services function as though they were hosted directly on your private network.
 - Remember that AWS PrivateLink applies to Applicatiosn/Services communicating with each other within the AWS network. For VPCs to communicate with each other within the AWS network, use VPC Peering.
@@ -1365,7 +1426,7 @@ VPC lets you provision a logically isolated section of the AWS cloud where you c
 - **Summary**: VPC Peering connects your *VPC to another VPC* through a non-public tunnel.
 
 ### VPC Flow Logs:
-- VPC Flow Logs is a feature that captures the IP information for all traffic flowing into and out of your VPC. Flow log data is sent to an S3 bucket or CloudWatch where you can view, retrieve, and manipulate this data. 
+- VPC Flow Logs is a feature that captures the IP information for all traffic flowing into and out of your VPC. Flow log data is sent to an S3 bucket or CloudWatch where you can view, retrieve, and manipulate this data.
 - You can capture the traffic flow at various stages through its travel:
   - Traffic flowing into and out of the VPC (like at the IGW)
   - Traffic flowing into and out of the subnet
@@ -1383,17 +1444,17 @@ VPC lets you provision a logically isolated section of the AWS cloud where you c
   - Query requests for instance metadata
   - DHCP traffic
   - Query requests to the AWS DNS server
-  
+
   ### AWS Global Accelerator:
 - AWS Global Accelerator accelerates connectivity to improve performance and availability for users. Global Accelerator sits on top of the AWS backbone and directs traffic to optimal endpoints worldwide. By default, Global Accelerator provides you two static IP addresses that you can make use of.
 - Global Accelerator helps reduce the number of hops to get to your AWS resources. Your users just need to make it to an edge location and once there, everything will remain internal to the AWS global network. Normally, it takes many networks to reach the application in full and paths to and from the application may vary. With each hop, there is risk involved either in security or in failure.
 
 ![Screen Shot 2020-06-21 at 5 50 02 PM](https://user-images.githubusercontent.com/13093517/85235996-aa0cbc00-b3e7-11ea-9e85-039f0ba6e770.png)
 
-- In summary, Global Accelerator is a fast/reliable pipeline between user and application. 
+- In summary, Global Accelerator is a fast/reliable pipeline between user and application.
 - It's like going on a trip (web traffic) and stopping to ask for directions in possibly unsafe parts of town (multiple networks are visited which can increase security risks) as opposed to having a GPS (global accelerator) that leads you directly where you want to go (endpoint) without having to make unnecessary stops.
 - It can be confused with Cloudfront, but CloudFront is a cache for content stemming from a distant origin server.
-- While CloudFront simply caches static content to the closest AWS Point Of Presence (POP) location, Global accelerator will use the same Amazon POP to accept initial requests and routes them directly to the services. 
+- While CloudFront simply caches static content to the closest AWS Point Of Presence (POP) location, Global accelerator will use the same Amazon POP to accept initial requests and routes them directly to the services.
 - Route53's latency based routing might also appear similar to Global Accelerator, but Route 53 is for simply helping choose which region for the user to use. Route53 has nothing to do with actually providing a fast network path.
 - Global Accelerator also provides fast regional failover.
 
@@ -1409,18 +1470,26 @@ VPC lets you provision a logically isolated section of the AWS cloud where you c
 - Standard SQS queues guarantee that a message is delivered at least once and because of this, it is possible on occasion that a message might be delivered more than once due to the asynchronous and highly distributed architecture. With standard queues, you have a nearly unlimited number of transactions per second.
 - FIFO SQS queues guarantee exactly-once processing and is limited to 300 transactions per second.
 - Messages in the queue can be kept there from one minute to 14 days and the default retention period is 4 days.
-- Visibility timeouts in SQS are the mechanism in which messages marked for delivery from the queue are given a timeframe to be fully received by a reader. This is done by temporarily making them invisible to other readers. If the message is not fully processed within the time limit, the message becomes visible again. This is another way in which messages can be duplicated. If you want to reduce the chance of duplication, increase the visibility timeout. 
+- Visibility timeouts in SQS are the mechanism in which messages marked for delivery from the queue are given a timeframe to be fully received by a reader. This is done by temporarily making them invisible to other readers. If the message is not fully processed within the time limit, the message becomes visible again. This is another way in which messages can be duplicated. If you want to reduce the chance of duplication, increase the visibility timeout.
 - The visibility timeout maximum is 12 hours.
 - Always remember that the messages in the SQS queue will continue to exist even after the EC2 instance has processed it, until you delete that message. You have to ensure that you delete the message after processing to prevent the message from being received and processed again once the visibility timeout expires.
-- An SQS queue can contain an unlimited number of messages. 
+- An SQS queue can contain an unlimited number of messages.
 - You cannot set a priority to the individual items in the SQS queue. If priority of messaging matters, create two separate SQS queues. The SQS queues for the priority message can be polled first by the EC2 Instances and once completed, the messages from the second queue can be processed next.
 
 ### SQS Polling:
-- Polling is the means in which you query SQS for messages or work. Amazon SQS provides short-polling and long-polling to receive messages from a queue. By default, queues use short polling. 
-- **SQS long-polling**: This polling technique will only return from the queue once a message is there, regardless if the queue is currently full or empty. This way, the reader needs to wait either for the timeout set or for a message to finally arrive. SQS long polling doesn't return a response until a message arrives in the queue, reducing your overall cost over time. 
-- **SQS short-polling**: This polling technique will return immediately with either a message that’s already stored in the queue or empty-handed. 
+- Polling is the means in which you query SQS for messages or work. Amazon SQS provides short-polling and long-polling to receive messages from a queue. By default, queues use short polling.
+- **SQS long-polling**: This polling technique will only return from the queue once a message is there, regardless if the queue is currently full or empty. This way, the reader needs to wait either for the timeout set or for a message to finally arrive. SQS long polling doesn't return a response until a message arrives in the queue, reducing your overall cost over time(it's a way to minimize costs).
+- **SQS short-polling**: This polling technique will return immediately with either a message that’s already stored in the queue or empty-handed.
 - The ReceiveMessageWaitTimeSeconds is the queue attribute that determines whether you are using Short or Long polling. By default, its value is zero which means it is using short-polling. If it is set to a value greater than zero, then it is long-polling.
 - Everytime you poll the queue, you incur a charge. So thoughtfully deciding on a polling strategy that fits your use case is important.
+
+### SQS Delay Queues
+- Let you postpone the delivery of new messages to a queue for a number of seconds.
+- Default delay is 0 seconds, the maximum is 15 minutes.
+- Possible for individual messages (use message timers)
+
+### Dead-letter Queues
+- Target messages that can't be processed(consumed) successfully.
 
 ## Simple Workflow Service (SWF)
 
@@ -1444,8 +1513,8 @@ Simple Notification Service is a pushed-based messaging service that provides a 
 
 ### SNS Key Details:
 - SNS is mainly used to send alarms or alerts.
-- SNS provides topics for high-throughput, push-based, many-to-many messaging. 
-- Using Amazon SNS topics, your publisher systems can fan out messages to a large number of subscriber endpoints for parallel processing, including Amazon SQS queues, AWS Lambda functions, and HTTP/S webhooks. Additionally, SNS can be used to fan out notifications to end users using mobile push, SMS, and email. 
+- SNS provides topics for high-throughput, push-based, many-to-many messaging.
+- Using Amazon SNS topics, your publisher systems can fan out messages to a large number of subscriber endpoints for parallel processing, including Amazon SQS queues, AWS Lambda functions, and HTTP/S webhooks. Additionally, SNS can be used to fan out notifications to end users using mobile push, SMS, and email.
 - You can send these push notifications to Apple, Google, Fire OS, and Windows devices.
 - SNS allows you to group multiple recipients using topics. A topic is an access point for allowing recipients to dynamically subscribe for identical copies of the same notification.
 - One topic can support deliveries to multiple endpoint types. When you publish to a topic, SNS appropriately formats copies of that message to send to whichever kind of device.
@@ -1453,7 +1522,7 @@ Simple Notification Service is a pushed-based messaging service that provides a 
 - There is no long or short polling involved with SNS due to the instantaneous pushing of messages
 - SNS has flexible message delivery over multiple transport protocols and has a simple API.
 
-## Kinesis 
+## Kinesis
 
 ### Kinesis Simplified:
 Amazon Kinesis makes it easy to collect, process, and analyze real-time, streaming data so you can get timely insights and react quickly to new information. With Amazon Kinesis, you can ingest real-time data such as video, audio, application logs, website clickstreams, and IoT telemetry data for machine learning, analytics, and other applications. Amazon Kinesis enables you to process and analyze data as it arrives and respond instantly instead of having to wait until all your data is collected before the processing can begin.
@@ -1467,7 +1536,7 @@ Amazon Kinesis makes it easy to collect, process, and analyze real-time, streami
   - Kinesis Data Firehose
   - Kinesis Data Analytics
   - Kinesis Video Stream
-- Kinesis Streams works where the data producers stream their data into Kinesis Streams which can retain the data that enters it from one day up until 7 days. Once inside Kinesis Streams, the data is contained within shards. 
+- Kinesis Streams works where the data producers stream their data into Kinesis Streams which can retain the data that enters it from one day up until 7 days. Once inside Kinesis Streams, the data is contained within shards.
 - Kinesis Streams can continuously capture and store terabytes of data per hour from hundreds of thousands of sources such as website clickstreams, financial transactions, social media feeds, IT logs, and location-tracking events. For example: purchase requests from a large online store like Amazon, stock prices, Netflix content, Twitch content, online gaming data, Uber positioning and directions, etc.
 - Amazon Kinesis Firehose is the easiest way to load streaming data into data stores and analytics tools. When data is streamed into Kinesis Firehose, there is no persistent storage there to hold onto it. The data has to be analyzed as it comes in so it's optional to have Lambda functions inside your Kinesis Firehose. Once processed, you send the data elsewhere.
 - Kinesis Firehose can capture, transform, and load streaming data into Amazon S3, Amazon Redshift, Amazon Elasticsearch Service, and Splunk, enabling near real-time analytics with existing business intelligence tools and dashboards you’re already using today.
@@ -1478,6 +1547,7 @@ Amazon Kinesis makes it easy to collect, process, and analyze real-time, streami
 - The total capacity of a Kinesis stream is the sum of data within its constituent shards.
 - You can always increase the write capacity assigned to your shard table.
 - There are 2 performance improving feature for Kinesis Data Stream: enhanced fan-out and HTTP/2 data retrival API.
+- Kinesis Data Stream has the ability to consume records in the same order a few hours later
 
 ## Lambda
 
@@ -1485,7 +1555,7 @@ Amazon Kinesis makes it easy to collect, process, and analyze real-time, streami
 AWS Lambda lets you run code without provisioning or managing servers. You pay only for the compute time you consume. With Lambda, you can run code for virtually any type of application or backend service - all with zero administration. You upload your code and Lambda takes care of everything required to run and scale your code with high availability. You can set up your code to be automatically triggered from other AWS services or be called directly from any web or mobile app.
 
 ### Lambda Key Details:
-- Lambda is a compute service where you upload your code as a function and AWS provisions the necessary details underneath the function so that the function executes successfully. 
+- Lambda is a compute service where you upload your code as a function and AWS provisions the necessary details underneath the function so that the function executes successfully.
 - AWS Lambda is the ultimate abstraction layer. You only worry about code, AWS does everything else.
 - Lambda supports Go, Python, C#, PowerShell, Node.js, and Java
 - Each Lambda function maps to one request. Lambda scales horizontally automatically.
@@ -1499,7 +1569,7 @@ AWS Lambda lets you run code without provisioning or managing servers. You pay o
 ![Screen Shot 2020-06-30 at 9 19 33 AM](https://user-images.githubusercontent.com/13093517/86130894-df35a000-bab2-11ea-9908-acbe3e8d4824.png)
 
 - When you create or update Lambda functions that use environment variables, AWS Lambda encrypts them using the AWS Key Management Service. When your Lambda function is invoked, those values are decrypted and made available to the Lambda code.
-- The first time you create or update Lambda functions that use environment variables in a region, a default service key is created for you automatically within AWS KMS. This key is used to encrypt environment variables. However, if you wish to use encryption helpers and use KMS to encrypt environment variables after your Lambda function is created, you must create your own AWS KMS key and choose it instead of the default key. 
+- The first time you create or update Lambda functions that use environment variables in a region, a default service key is created for you automatically within AWS KMS. This key is used to encrypt environment variables. However, if you wish to use encryption helpers and use KMS to encrypt environment variables after your Lambda function is created, you must create your own AWS KMS key and choose it instead of the default key.
 - To enable your Lambda function to access resources inside a private VPC, you must provide additional VPC-specific configuration information that includes VPC subnet IDs and security group IDs. AWS Lambda uses this information to set up elastic network interfaces (ENIs) that enable your function to connect securely to other resources within a private VPC.
 
 - AWS X-Ray allows you to debug your Lambda function in case of unexpected behavior.
@@ -1512,7 +1582,7 @@ AWS Lambda lets you run code without provisioning or managing servers. You pay o
   - Before CloudFront forwards the request to the origin (origin request)
   - After CloudFront receives the response from the origin (origin response)
   - Before CloudFront forwards the response to the viewer (viewer response)
-  
+
 ![Screen Shot 2020-06-30 at 9 27 48 AM](https://user-images.githubusercontent.com/13093517/86131713-fc1ea300-bab3-11ea-8190-1d13128bee92.png)
 
 - You'd use Lambda@Edge to simplify and reduce origin infrastructure.
@@ -1521,7 +1591,7 @@ AWS Lambda lets you run code without provisioning or managing servers. You pay o
 ## API Gateway
 
 ### API Gateway Simplified:
-API Gateway is a fully managed service for developers that makes it easy to build, publish, manage, and secure entire APIs. With a few clicks in the AWS Management Console, you can create an API that acts as a “front door” for applications to access data, business logic, or functionality from your back-end services, such as workloads running on EC2) code running on AWS Lambda, or any web application. 
+API Gateway is a fully managed service for developers that makes it easy to build, publish, manage, and secure entire APIs. With a few clicks in the AWS Management Console, you can create an API that acts as a “front door” for applications to access data, business logic, or functionality from your back-end services, such as workloads running on EC2) code running on AWS Lambda, or any web application.
 
 ### API Gateway Key Details:
 - Amazon API Gateway handles all the tasks involved in accepting and processing up to hundreds of thousands of concurrent API calls, including traffic management, authorization and access control, monitoring, and API version management.
@@ -1539,7 +1609,7 @@ API Gateway is a fully managed service for developers that makes it easy to buil
 - Since API Gateway can function with AWS Lambda, you can run your APIs and code without needing to maintain servers.
 - Amazon API Gateway provides throttling at multiple levels including global and by a service call.
   - In software, a throttling process, or a throttling controller as it is sometimes called, is a process responsible for regulating the rate at which application processing is conducted, either statically or dynamically.
-  - Throttling limits can be set for standard rates and bursts. For example, API owners can set a rate limit of 1,000 requests per second for a specific method in their REST APIs, and also configure Amazon API Gateway to handle a burst of 2,000 requests per second for a few seconds. 
+  - Throttling limits can be set for standard rates and bursts. For example, API owners can set a rate limit of 1,000 requests per second for a specific method in their REST APIs, and also configure Amazon API Gateway to handle a burst of 2,000 requests per second for a few seconds.
   - Amazon API Gateway tracks the number of requests per second. Any requests over the limit will receive a 429 HTTP response. The client SDKs generated by Amazon API Gateway retry calls automatically when met with this response.
 - You can add caching to API calls by provisioning an Amazon API Gateway cache and specifying its size in gigabytes. The cache is provisioned for a specific stage of your APIs. This improves performance and reduces the traffic sent to your back end. Cache settings allow you to control the way the cache key is built and the time-to-live (TTL) of the data stored for each method. Amazon API Gateway also exposes management APIs that help you invalidate the cache for each stage.
 - You can enable API caching for improving latency and reducing I/O for your endpoint.
@@ -1581,7 +1651,8 @@ CloudFormation is an automated tool for provisioning entire cloud-based environm
 
 - For any Logical Resources in the stack, CloudFormation will make a corresponding Physical Resources in your AWS account. It is CloudFormation’s job to keep the logical and physical resources in sync.
 - A template can be updated and then used to update the same stack.
-
+- StackSets can be used to deploy the same template across AWS accounts and regions. AWS CloudFormation StackSet extends the functionality of stacks by enabling you to create, update, or delete stacks across multiple accounts and regions with a single operation.
+- A stack set lets you create stacks in AWS accounts across regions by using a single AWS CloudFormation template. Using an administrator account of an "AWS Organization", you define and manage an AWS CloudFormation template, and use the template as the basis for provisioning stacks into selected target accounts of an "AWS Organization" across specified regions.
 
 ## ElasticBeanstalk
 
@@ -1591,8 +1662,8 @@ ElasticBeanstalk is another way to script out your provisioning process by deplo
 ### ElasticBeanstalk Key Details:
 - Just upload your application and ElasticBeanstalk will take care of the underlying infrastructure.
 - ElasticBeanstalk has capacity provisioning, meaning you can use it with autoscaling from the get-go.
-ElasticBeanstalk applies updates to your application by having a duplicate ready with the already updated version. This duplicate is then swapped with the original. This is done as a preventative measure in case your updated application fails. If the app does fail, ElasticBeanstalk will switch back to the original copy with the older version and there will be no downtime experienced by the users who are using your application. 
-- You can use ElasticBeanstalk to even host Docker as Elastic Beanstalk supports the deployment of web applications from containers. With Docker containers, you can define your own runtime environment, your own platform, programming language, and any application dependencies (such as package managers or tools) that aren't supported by other platforms. ElasticBeanstalk makes it easy to deploy Docker as Docker containers are already self-contained and include all the configuration information and software required to run. 
+ElasticBeanstalk applies updates to your application by having a duplicate ready with the already updated version. This duplicate is then swapped with the original. This is done as a preventative measure in case your updated application fails. If the app does fail, ElasticBeanstalk will switch back to the original copy with the older version and there will be no downtime experienced by the users who are using your application.
+- You can use ElasticBeanstalk to even host Docker as Elastic Beanstalk supports the deployment of web applications from containers. With Docker containers, you can define your own runtime environment, your own platform, programming language, and any application dependencies (such as package managers or tools) that aren't supported by other platforms. ElasticBeanstalk makes it easy to deploy Docker as Docker containers are already self-contained and include all the configuration information and software required to run.
 
 ## AWS Organizations
 
@@ -1601,17 +1672,38 @@ AWS Organizations is an account management service that enables you to consolida
 
 ### AWS Organizations Key Details:
 - Best practices is to use the root account to manage billing only with separate accounts used to deploy resources.
-- The point of AWS Organizations is to deploy permissions to the separate accounts underneath the root account and have those policies trickle down. AWS Organizations helps you centrally govern your environment as you grow and scale your workloads on AWS. 
-- You can use organizational units (OUs) to group similar accounts together to administer as a single unit. This greatly simplifies the management of your accounts. 
+- The point of AWS Organizations is to deploy permissions to the separate accounts underneath the root account and have those policies trickle down. AWS Organizations helps you centrally govern your environment as you grow and scale your workloads on AWS.
+- You can use organizational units (OUs) to group similar accounts together to administer as a single unit. This greatly simplifies the management of your accounts.
 - You can attach a policy-based control to an OU, and all accounts within the OU automatically inherit the policy. So if your company's developers all have their own sandbox AWS account, they can be treated as a single unit and be restricted by the same policies.
 - With AWS Organizations, we can enable or disable services using Service Control Policies (SCPs) broadly on organizational units or more specifically on individual accounts
 - Use SCPs with AWS Organizations to establish access controls so that all IAM principals (users and roles) adhere to them. With SCPs, you can specify *Conditions*, *Resources*, and *NotAction* to deny access across accounts in your organization or organizational unit. For example, you can use SCPs to restrict access to specific AWS Regions, or prevent deleting common resources, such as an IAM role used for your central administrators.
+
+## AWS Step Functions
+- Amazon recommends customers should consider using Step Functions for new applications. Use SWF only if Step functions doen't fit your needs
+- Fully managed service
+- Coordinate and orchestrate multiple AWS services
+- Visual workflow
+- Based on steps, such as tasks, choices
+- suppot parallel execution, and timeouts
+- Can connect tasks to code hosted in functions, containers, instances, and on-premises servers
+
+## AWS Batch
+- AWS Batch is a set of batch management capabilities that enables developers, scientists, and engineers to easily and efficiently run hundreds of thousands of batch computing jobs on AWS.
+- AWS Batch dynamically provisions the optimal quantity and type of compute resources (e.g., CPU or memory optimized instances) based on the volume and specific resource requirements of the batch jobs submitted.
+- AWS Batch cannot be used to orchestrate a workflow, hence it is an incorrect option.
+## Amazon Simple Workflow Service (SWF)
+ - Amazon SWF helps developers build, run, and scale background jobs that have parallel or sequential steps. In Amazon SWF, tasks represent invocations of logical steps in applications.
+ - Tasks are processed by workers which are programs that interact with Amazon SWF to get tasks, process them, and return their results. To coordinate the application execution across workers, you write a program called the decider in your choice of programming language.
+ - Although Amazon SWF provides you complete control over your orchestration logic, it increases the complexity of developing applications.
+
+## comparison Step Functions vs Simple Workflow Service
+
 
 ## Miscellaneous
 
 The following section includes services, features, and techniques that may appear on the exam. They are also extremely useful to know as an engineer using AWS. If the following items do appear on the exam, they will not be tested in detail. You'll just have to know what the meaning is behind the name. It is a great idea to learn each item in depth for your career's benefit, but it is not necessary for the exam.
 
-### What is the Amazon Cognito? 
+### What is the Amazon Cognito?
 - Before discussing Amazon Cognito, it is first important to understand what Web Identity Federation is. Web Identity Federation lets you give your users access to AWS resources after they have successfully authenticated into a web-based identity provider such as Facebook, Google, Amazon, etc. Following a successful login into these services, the user is provided an auth code from the identity provider which can be used to gain temporary AWS credentials.
 - Amazon Cognito is the Amazon service that provides Web Identity Federation. You don’t need to write the code that tells users to sign in for Facebook or sign in for Google on your application. Cognito does that already for you out of the box.
 - Once authenticated into an identity provider (say with Facebook as an example), the provider supplies an auth token. This auth token is then supplied to cognito which responds with limited access to your AWS environment. You dictate how limited you would like this access to be in the IAM role.
@@ -1620,24 +1712,28 @@ The following section includes services, features, and techniques that may appea
 - *Cognito Identity Pools* are used to allow users temp access to direct AWS Services like S3 or DynamoDB. Identity pools actually go in and grant you the IAM role.
 - SAML-based authentication can be used to allow AWS Management Console login for non-IAM users.
 - In particular, you can use Microsoft Active Directory which implements Security Assertion Markup Language (SAML) as well.
-- You can use Amazon Cognito to deliver temporary, limited-privilege credentials to your application so that your users can access AWS resources. 
-- Amazon Cognito identity pools support both authenticated and unauthenticated identities. 
+- You can use Amazon Cognito to deliver temporary, limited-privilege credentials to your application so that your users can access AWS resources.
+- Amazon Cognito identity pools support both authenticated and unauthenticated identities.
 - You can retrieve a unique Amazon Cognito identifier (identity ID) for your end user immediately if you're allowing unauthenticated users or after you've set the login tokens in the credentials provider if you're authenticating users.
 - When you need to easily add authentication to your mobile and desktop app, think Amazon Cognito.
 
 ### What is AWS Resource Access Manager?
 - AWS Resource Access Manager (RAM) is a service that enables you to easily and securely share AWS resources with any AWS account or within your AWS Organization. You can share AWS Transit Gateways, Subnets, AWS License Manager configurations, and Amazon Route 53 Resolver rules resources with RAM.
 - Many organizations use multiple accounts to create administrative or billing isolation, and to limit the impact of errors as part of the AWS Organizations service.
-- RAM eliminates the need to create duplicate resources in multiple accounts, reducing the operational overhead of managing those resources in every single account you own. 
+- RAM eliminates the need to create duplicate resources in multiple accounts, reducing the operational overhead of managing those resources in every single account you own.
 - You can create resources centrally in a multi-account environment, and use RAM to share those resources across accounts in three simple steps: create a Resource Share, specify resources, and specify accounts.
 - RAM is available at no additional charge.
 
 ### What is Athena?
-- Athena is an interactive query service which allows you to interact and query data from S3 using standard SQL commands. This is beneficial for programmatic querying for the average developer. It is serverless, requires no provisioning, and you pay per query and per TB scanned. You basically turn S3 into a SQL supported database by using Athena. 
+- Athena is an interactive query service which allows you to interact and query data from S3 using standard SQL commands. This is beneficial for programmatic querying for the average developer. It is serverless, requires no provisioning, and you pay per query and per TB scanned. You basically turn S3 into a SQL supported database by using Athena.
 - Example use cases:
   - Query logs that are dumped into S3 buckets as an alternative or supplement to the ELK stack
   - Setting queries to run business reports based off of the data regularly entering S3
   - Running queries on click-stream data to have further insight of customer behavior
+
+### What is EMR?
+- It's big data platform for processing vast amounts of data using open source tools such as Apache Spark, Apache Hive, Apache HBase, Apache Flink, Apache Hudi, and Presto.
+- You can create clusters or pay per hour.
 
 ### What is AWS Macie?
 - To understand Macie, it is important to understand PII or Personally Identifiable Information:
@@ -1646,31 +1742,31 @@ The following section includes services, features, and techniques that may appea
 - Amazon Macie is an ML-powered security service that helps you prevent data loss by automatically discovering, classifying, and protecting sensitive data stored in Amazon S3. Amazon Macie uses machine learning to recognize sensitive data such as personally identifiable information (PII) or intellectual property, assigns a business value, and provides visibility into where this data is stored and how it is being used in your organization.
 - You can be informed of detections via the Macie dashboards, alerts, or reporting.
 - Macie can also analyze CloudTrail logs to see who might have interacted with sensitive data.
-- Macie continuously monitors data access activity for anomalies, and delivers alerts when it detects risk of unauthorized access or inadvertent data leaks. 
+- Macie continuously monitors data access activity for anomalies, and delivers alerts when it detects risk of unauthorized access or inadvertent data leaks.
 - Macie has ability to detect global access permissions inadvertently being set on sensitive data, detect uploading of API keys inside source code, and verify sensitive customer data is being stored and accessed in a manner that meets their compliance standards.
 
 ### What is AWS KMS?
-- AWS Key Management Service (AWS KMS) is a managed service that makes it easy for you to create and control the encryption keys used to encrypt your data. The master keys that you create in AWS KMS are protected by FIPS 140-2 validated cryptographic modules. 
+- AWS Key Management Service (AWS KMS) is a managed service that makes it easy for you to create and control the encryption keys used to encrypt your data. The master keys that you create in AWS KMS are protected by FIPS 140-2 validated cryptographic modules.
 - AWS KMS is integrated with most other AWS services that encrypt your data with encryption keys that you manage. AWS KMS is also integrated with AWS CloudTrail to provide encryption key usage logs to help meet your auditing, regulatory and compliance needs.
 - You can configure your application to use the KMS API to encrypt all data before saving it to disk.
 
 ### What is AWS Secrets Manager?
 - AWS Secrets Manager is an AWS service that makes it easier for you to manage secrets.
 - Secrets can be database credentials, passwords, third-party API keys, and even arbitrary text. You can store and control access to these secrets centrally by using the Secrets Manager console, the Secrets Manager command line interface (CLI), or the Secrets Manager API and SDKs.
-- In the past, when you created a custom application that retrieves information from a database, you typically had to embed the credentials (the secret) for accessing the database directly in the application. When it came time to rotate the credentials, you had to do much more than just create new credentials. You had to invest time to update the application to use the new credentials. Then you had to distribute the updated application. If you had multiple applications that shared credentials and you missed updating one of them, the application would break. 
+- In the past, when you created a custom application that retrieves information from a database, you typically had to embed the credentials (the secret) for accessing the database directly in the application. When it came time to rotate the credentials, you had to do much more than just create new credentials. You had to invest time to update the application to use the new credentials. Then you had to distribute the updated application. If you had multiple applications that shared credentials and you missed updating one of them, the application would break.
 - Because of this risk, many customers have chosen not to regularly rotate their credentials, which effectively substitutes one risk for another (functionality vs. security).
 - Secrets Manager enables you to replace hard-coded credentials in your code (including passwords), with an API call to Secrets Manager to retrieve the secret programmatically.
-- This helps ensure that the secret can't be compromised by someone examining your code, because the secret simply isn't there. 
+- This helps ensure that the secret can't be compromised by someone examining your code, because the secret simply isn't there.
 - Also, you can configure Secrets Manager to automatically rotate the secret for you according to a schedule that you specify. This enables you to replace long-term secrets with short-term ones, which helps to significantly reduce the risk of compromise.
 
 ### What is AWS STS?
-- AWS Security Token Service (AWS STS) is the service that you can use to create and provide trusted users with temporary security credentials that can control access to your AWS resources. 
+- AWS Security Token Service (AWS STS) is the service that you can use to create and provide trusted users with temporary security credentials that can control access to your AWS resources.
 - Temporary security credentials work almost identically to the long-term access key credentials that your IAM users can use.
 - Temporary security credentials are short-term, as the name implies. They can be configured to last for anywhere from a few minutes to several hours. After the credentials expire, AWS no longer recognizes them or allows any kind of access from API requests made with them.
 
 ### What is OpsWorks?
-- AWS OpsWorks is a configuration management service that provides managed instances of Chef and Puppet. Chef and Puppet are automation platforms that allow you to use code to automate the configurations of your servers. 
-- OpsWorks lets you use Chef and Puppet to automate how servers are configured, deployed, and managed across your Amazon EC2 instances or on-premises compute environments. 
+- AWS OpsWorks is a configuration management service that provides managed instances of Chef and Puppet. Chef and Puppet are automation platforms that allow you to use code to automate the configurations of your servers.
+- OpsWorks lets you use Chef and Puppet to automate how servers are configured, deployed, and managed across your Amazon EC2 instances or on-premises compute environments.
 - OpsWorks has three offerings - AWS Opsworks for Chef Automate, AWS OpsWorks for Puppet Enterprise, and AWS OpsWorks Stacks.
 - AWS OpsWorks Stacks lets you manage applications and servers on AWS and on-premises. With OpsWorks Stacks, you can model your application as a stack containing different layers, such as load balancing, database, and application server.
 - OpsWorks Stacks  is complex enough for you to deploy and configure Amazon EC2 instances in each layer or connect to other resources such as Amazon RDS databases.
@@ -1681,41 +1777,70 @@ The following section includes services, features, and techniques that may appea
 - With Elastic Transcoder, you pay per minute of the transcode job and the resolution of the finished work.
 
 ### What is AWS Directory Service?
-- AWS Directory Service provides multiple ways to use Amazon Cloud Directory and Microsoft Active Directory (AD) with other AWS services. 
-- Directories store information about users, groups, and devices, and administrators use them to manage access to information and resources. 
+- AWS Directory Service provides multiple ways to use Amazon Cloud Directory and Microsoft Active Directory (AD) with other AWS services.
+- Directories store information about users, groups, and devices, and administrators use them to manage access to information and resources.
 - AWS Directory Service provides multiple directory choices for customers who want to use existing Microsoft AD or Lightweight Directory Access Protocol (LDAP)–aware applications in the cloud. It also offers those same choices to developers who need a directory to manage users, groups, devices, and access.
 
+#### Active Directory Connector
+- Proxy server to connect on-premises users to log in to AWS applications and services with their AD credentials
+- Your end users and IT administrators can use their existing corporate credentials to log on to AWS applications such as Amazon WorkSpaces, Amazon WorkDocs, or Amazon WorkMail.
+- You can manage AWS resources like Amazon EC2 instances or Amazon S3 buckets through IAM role-based access to the AWS Management Console.
+- You can consistently enforce existing security policies (such as password expiration, password history, and account lockouts) whether users or IT administrators are accessing resources in your on-premises infrastructure or in the AWS Cloud.
+- You can use AD Connector to enable multi-factor authentication by integrating with your existing RADIUS-based MFA infrastructure to provide an additional layer of security when users access AWS applications.
+
+#### AWS Managed Microsoft AD
+- Run Microsoft Active Directory (AD) as a managed service (cloud based).
+- Can connect your AWS resources with an existing on-premises Microsoft Active Directory.
+- Manage users and groups
+- Provide single sign-on to applications and services
+- Create and apply group policy
+- Securely connect to Amazon EC2 Linux and Windows instances
+- Simplify the deployment and management of cloud-based Linux and Microsoft Windows workloads
+- You can use AWS Managed Microsoft AD to enable multi-factor authentication by integrating with your existing RADIUS-based MFA infrastructure to provide an additional layer of security when users access AWS applications.
+- Allow you to run directory-aware workloads in the AWS Cloud.
+- trust relationship set up between an AWS hosted directory and your on-premises directories
+
+#### Simple AD
+ - A standalone MS AD Compatible (powered by samba)
+ - Recommended for 5,000 of fewer users
+ - The least expansive and few functionalities
+
+#### Amazon Cloud Directory
+- Cloud native directory
+- hierarchical data
+
+
 ### What is IoT Core?
-- AWS IoT Core is a managed cloud service that lets connected devices easily and securely interact with cloud applications and other devices. 
+- AWS IoT Core is a managed cloud service that lets connected devices easily and securely interact with cloud applications and other devices.
 - AWS IoT Core provides secure communication and data processing across different kinds of connected devices and locations so you can easily build IoT applications.
 
 ### What is AWS WorkSpaces?
-- Amazon WorkSpaces is a managed, secure Desktop-as-a-Service (DaaS) solution. You can use Amazon WorkSpaces to provision either Windows or Linux desktops in just a few minutes and quickly scale to provide thousands of desktops to workers across the globe. 
-- Amazon WorkSpaces helps you eliminate the complexity in managing hardware inventory, OS versions and patches, and Virtual Desktop Infrastructure (VDI), which helps simplify your desktop delivery strategy. 
+- Amazon WorkSpaces is a managed, secure Desktop-as-a-Service (DaaS) solution. You can use Amazon WorkSpaces to provision either Windows or Linux desktops in just a few minutes and quickly scale to provide thousands of desktops to workers across the globe.
+- Amazon WorkSpaces helps you eliminate the complexity in managing hardware inventory, OS versions and patches, and Virtual Desktop Infrastructure (VDI), which helps simplify your desktop delivery strategy.
 - With Amazon WorkSpaces, your users get a fast, responsive desktop of their choice that they can access anywhere, anytime, from any supported device.
 
 ### What is AWS Fargate?
 - AWS Fargate is a serverless compute engine for containers.
-- The Fargate launch type allows you to run your containerized applications without the need to provision and manage the backend infrastructure. Just register your task definition and Fargate launches the container for you. 
-- It works with both Amazon Elastic Container Service (ECS) and Amazon Elastic Kubernetes Service (EKS). 
+- The Fargate launch type allows you to run your containerized applications without the need to provision and manage the backend infrastructure. Just register your task definition and Fargate launches the container for you.
+- It works with both Amazon Elastic Container Service (ECS) and Amazon Elastic Kubernetes Service (EKS).
 - Fargate makes it easy for you to focus on building your applications. It removes the need to provision and manage servers, lets you specify and pay for resources per application, and improves security through application isolation by design.
 
 ### What is Amazon Elastic Container Service?
-- Amazon Elastic Container Service (Amazon ECS) is a fully managed container orchestration service. 
-- Amazon ECS eliminates the need for you to install, operate, and scale your own cluster management infrastructure. With simple API calls, you can launch and stop container-enabled applications, query the complete state of your cluster, and access many familiar features like security groups, Elastic Load Balancing, EBS volumes and IAM roles. 
+- Amazon Elastic Container Service (Amazon ECS) is a fully managed container orchestration service.
+- Amazon ECS eliminates the need for you to install, operate, and scale your own cluster management infrastructure. With simple API calls, you can launch and stop container-enabled applications, query the complete state of your cluster, and access many familiar features like security groups, Elastic Load Balancing, EBS volumes and IAM roles.
 - You can use Amazon ECS to schedule the placement of containers across your cluster based on your resource needs and availability requirements. You can also integrate your own scheduler or third-party schedulers to meet business or application specific requirements.
 - You can choose to run your ECS clusters using AWS Fargate, which is serverless compute for containers. Fargate removes the need to provision and manage servers, lets you specify and pay for resources per application, and improves security through application isolation by design.
 
 ### What is Amazon Elastic Kubernetes Service?
 - Amazon Elastic Kubernetes Service (Amazon EKS) is a fully managed Kubernetes service. EKS runs upstream Kubernetes and is certified Kubernetes conformant so you can leverage all benefits of open source tooling from the community. You can also easily migrate any standard Kubernetes application to EKS without needing to refactor your code.
 - Kubernetes is open source software that allows you to deploy and manage containerized applications at scale. Kubernetes groups containers into logical groupings for management and discoverability, then launches them onto clusters of EC2 instances. Using Kubernetes you can run containerized applications including microservices, batch processing workers, and platforms as a service (PaaS) using the same toolset on premises and in the cloud.
-- Amazon EKS provisions and scales the Kubernetes control plane, including the API servers and backend persistence layer, across multiple AWS availability zones for high availability and fault tolerance. Amazon EKS automatically detects and replaces unhealthy control plane nodes and provides patching for the control plane. 
+- Amazon EKS provisions and scales the Kubernetes control plane, including the API servers and backend persistence layer, across multiple AWS availability zones for high availability and fault tolerance. Amazon EKS automatically detects and replaces unhealthy control plane nodes and provides patching for the control plane.
 - Without Amazon EKS, you have to run both the Kubernetes control plane and the cluster of worker nodes yourself. With Amazon EKS, you provision your worker nodes using a single command in the EKS console, CLI, or API, and AWS handles provisioning, scaling, and managing the Kubernetes control plane in a highly available and secure configuration. This removes a significant operational burden for running Kubernetes and allows you to focus on building applications instead of managing AWS infrastructure.
-- You can run EKS using AWS Fargate, which is serverless compute for containers. Fargate removes the need to provision and manage servers, lets you specify and pay for resources per application, and improves security through application isolation by design. 
+- You can run EKS using AWS Fargate, which is serverless compute for containers. Fargate removes the need to provision and manage servers, lets you specify and pay for resources per application, and improves security through application isolation by design.
 - Amazon EKS is integrated with many AWS services to provide scalability and security for your applications. These services include Elastic Load Balancing for load distribution, IAM for authentication, Amazon VPC for isolation, and AWS CloudTrail for logging.
 
 ### What does pilot light mean?
-- The term pilot light is often used to describe a disaster recovery scenario in which a minimal version of an environment is always running in the cloud. 
+- The term pilot light is often used to describe a disaster recovery scenario in which a minimal version of an environment is always running in the cloud.
 - The idea of the pilot light is an analogy that comes from the gas heater. In a gas heater, a small flame that’s always on and can quickly ignite the entire furnace to heat up a house. This scenario is similar to a backup-and-restore scenario.
 - For example, with AWS you can maintain a pilot light by configuring and running the most critical core elements of your system in AWS. When the time comes for recovery, you can rapidly provision a full-scale production environment around the critical core that has always been running.
 
@@ -1726,7 +1851,7 @@ The following section includes services, features, and techniques that may appea
 - CloudFormation and CodeDeploy (AWS's version of Jenkins) both support this deployment technique.
 
 ### What is Amazon Data Lifecycle Manager?
-- You can use Amazon Data Lifecycle Manager (Amazon DLM) to automate the creation, retention, and deletion of snapshots taken to back up your Amazon EBS volumes. 
+- You can use Amazon Data Lifecycle Manager (Amazon DLM) to automate the creation, retention, and deletion of snapshots taken to back up your Amazon EBS volumes.
 - Automating snapshot management helps you to:
   - Protect valuable data by enforcing a regular backup schedule.
   - Retain backups as required by auditors or internal compliance.
@@ -1734,7 +1859,7 @@ The following section includes services, features, and techniques that may appea
 - Using Amazon DLM means that you no longer need to remember to take your EBS snapshots, thus reducing cognitive load on engineers.
 
 ### What is Route Origin Authorization?
-- You can bring part or all of your public IPv4 address range from your on-premises network to your AWS account. You continue to own the address range, but AWS advertises it on the Internet. After you bring the address range to AWS, it appears in your account as an address pool. 
+- You can bring part or all of your public IPv4 address range from your on-premises network to your AWS account. You continue to own the address range, but AWS advertises it on the Internet. After you bring the address range to AWS, it appears in your account as an address pool.
 - You can then create an Elastic IP address from your address pool and use it with your AWS resources, such as EC2 instances, NAT gateways, and Network Load Balancers. This is also called "Bring Your Own IP Addresses (BYOIP)".
 - To ensure that only you can bring your address range to your AWS account, you must authorize Amazon to advertise the address range and provide proof that you own the address range.
 - The benefit of ROA is that you can migrate pre-existing applications to AWS without requiring your partners and customers to change their IP address whitelists.  
